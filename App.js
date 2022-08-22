@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Text,
   Link,
@@ -15,19 +15,31 @@ import {
   CircleIcon,
   Container,
   View,
-} from "native-base";
-import { HomeUserLevel } from "./components/home/HomeUserLevel";
-import { HomeWelcome } from "./components/home/HomeWelcome";
+  Divider
+} from 'native-base';
+import { HomeUserLevel } from './components/home/HomeUserLevel';
+import { HomeWelcome } from './components/home/HomeWelcome';
+import ProfilePicture from './components/ProfilePicture';
+import LevelCard from './components/LevelCard';
 
 
 export default function App() {
   return (
     <NativeBaseProvider>
       <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
-      <HomeUserLevel progress={50} level={2} />
-      <HomeWelcome welcome="Bem vinda" name="Isis"/>
-      {/* corrigir a linha ali q nao consegui fazer... */}
-      <Box marginLeft={5} marginRight={5} w="100%" h="2px" borderBottomColor={"black"} borderBottomWidth={"2px"} paddingTop={"10px"}/>
+      <Box px={5} py={5}>
+        <Center>
+          <HStack bg="#FFF" justifyContent="space-between" alignItems="center" w="100%">
+            <ProfilePicture/>
+            <HomeUserLevel progress={50} level={2} />
+          </HStack>
+          <HomeWelcome welcome="Bem vinda" name="Isis" />
+          <Divider thickness={2} bg={'#101118'}/>
+          <LevelCard currentLevel="1"/>
+        </Center>
+      </Box>
+
+
     </NativeBaseProvider>
   );
 }
