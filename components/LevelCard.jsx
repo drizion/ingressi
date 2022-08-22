@@ -15,9 +15,6 @@ const LevelCard = (props) => {
     <Box
       mt={8}
       w="100%"
-      // borderColor={'#101118'}
-      // borderWidth="2px"
-      // borderRadius={4}
       bg="#FFFFFF"
       p={4}
       style={styles.brutalShadow}

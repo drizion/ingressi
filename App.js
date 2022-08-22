@@ -39,8 +39,6 @@ export default function App() {
           <LevelCard currentLevel="1"/> 
         </Center>
       </Box>
-
-
     </NativeBaseProvider>
   );
 }
