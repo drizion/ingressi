@@ -2,11 +2,10 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     brutalShadow: {
-      shadowColor: '#000000',
-      shadowOffset: {width: 1.7, height: 1.7},
-      shadowOpacity: 1,
-      shadowRadius: 0,
-      borderRadius: 10
+      borderWidth: 2,
+      borderRightWidth: 4,
+      borderBottomWidth: 4,
+      borderRadius: 10,
     },
     profilePicture: {
       borderRadius: 4,

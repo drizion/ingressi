@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   Heading,
@@ -7,7 +8,6 @@ import {
   HStack,
   Center,
 } from 'native-base';
-import React from 'react';
 import { styles } from './styles';
 
 const LevelCard = (props) => {
@@ -15,10 +15,12 @@ const LevelCard = (props) => {
     <Box
       mt={8}
       w="100%"
-      borderColor={'#101118'}
-      borderWidth="2px"
-      borderRadius={4}
+      // borderColor={'#101118'}
+      // borderWidth="2px"
+      // borderRadius={4}
+      bg="#FFFFFF"
       p={4}
+      style={styles.brutalShadow}
     >
       <HStack>
         <Box
@@ -49,9 +51,10 @@ const LevelCard = (props) => {
           // size="2xl"
           height={6}
           value={50}
+          borderWidth={2}
           _filledTrack={{
             bg: 'lime.500',
-            borderWidth: 2,
+            borderRightWidth: 3,
           }}
         />
       </VStack>
