@@ -9,13 +9,13 @@ import { HomeWelcome } from '../components/home/HomeWelcome';
 import ProfilePicture from '../components/ProfilePicture';
 import LevelCard from '../components/LevelCard';
 import HomeCard from '../components/HomeCard';
-
+import { SafeAreaTop, SafeAreaTop2 } from '../components/SafeAreaTop';
 // export
 export default function HomeScreen() {
   return (
     <>
-      <Box px={5} py={5} mt={Platform.OS == 'ios' ? 6 : 0}>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'#FFF'} />
+      <SafeAreaTop2>
+        <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
         <Center>
           <HStack
             justifyContent="space-between"
@@ -58,7 +58,7 @@ export default function HomeScreen() {
             cardBgColor="#3E9F88"
           />
         </HStack>
-      </Box>
+      </SafeAreaTop2>
     </>
   );
 }

@@ -7,6 +7,12 @@ export const styles = StyleSheet.create({
       borderBottomWidth: 4,
       borderRadius: 10,
     },
+    brutalButton: {
+      borderWidth: 1,
+      borderRightWidth: 4,
+      borderBottomWidth: 4,
+      borderRadius: 5,
+    },
     profilePicture: {
       borderRadius: 4,
       borderColor: '#8E8484',
