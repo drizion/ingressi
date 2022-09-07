@@ -8,9 +8,9 @@ export const styles = StyleSheet.create({
       borderRadius: 10,
     },
     brutalButton: {
-      borderWidth: 1,
-      borderRightWidth: 4,
-      borderBottomWidth: 4,
+      borderWidth: 0.5,
+      borderRightWidth: 2.5,
+      borderBottomWidth: 2.5,
       borderRadius: 5,
     },
     profilePicture: {

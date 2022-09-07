@@ -1,7 +1,7 @@
 // imports
 import React from 'react';
 import { Platform } from 'react-native';
-import { HStack, Center, Heading, Box, StatusBar, Divider } from 'native-base';
+import { HStack, Center, Heading, Box, StatusBar, Divider, ScrollView } from 'native-base';
 
 // components
 import { HomeUserLevel } from '../components/home/HomeUserLevel';
@@ -9,13 +9,12 @@ import { HomeWelcome } from '../components/home/HomeWelcome';
 import ProfilePicture from '../components/ProfilePicture';
 import LevelCard from '../components/LevelCard';
 import HomeCard from '../components/HomeCard';
-import { SafeAreaTop, SafeAreaTop2 } from '../components/SafeAreaTop';
 // export
 export default function HomeScreen() {
   return (
-    <>
-      <SafeAreaTop2>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
+    <Box flex={1} safeAreaTop>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
+      <ScrollView px={5} paddingTop={1}>
         <Center>
           <HStack
             justifyContent="space-between"
@@ -58,7 +57,7 @@ export default function HomeScreen() {
             cardBgColor="#3E9F88"
           />
         </HStack>
-      </SafeAreaTop2>
-    </>
+      </ScrollView>
+    </Box>
   );
 }
