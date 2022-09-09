@@ -14,6 +14,8 @@ import RegisterScreen from './screens/RegisterScreen';
 import MissionScreen from './screens/MissionScreen';
 import ChatScreen from './screens/ChatScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import PostRegisterScreen from './screens/PostRegisterScreen';
+import CheckLogin from './screens/CheckLogin';
 
 const queryClient = new QueryClient()
 
@@ -38,6 +40,12 @@ export default function App() {
               component={WelcomeScreen}
               options={{ headerShown: false }}
             />
+            
+            <Stack.Screen
+              name="check"
+              component={CheckLogin}
+              options={{ title: "Entrando..." }}
+            />
             <Stack.Screen
               name="Register"
               component={RegisterScreen}
@@ -52,6 +60,11 @@ export default function App() {
               name="HomeScreen"
               component={AppTabs}
               options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PostRegister"
+              component={PostRegisterScreen}
+              options={{ title: "Quase lá"}}
             />
           </Stack.Navigator>
         </NavigationContainer>
