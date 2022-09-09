@@ -4,8 +4,12 @@ import { HStack, ScrollView, FormControl, Input, Heading, Box, StatusBar, Divide
 import { isEmail } from '../src/handlers/handleRegister'; 
 import { styles } from '../components/styles';
 import api from '../src/services';
+import { BackHandler } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
 const LoginScreen = ({navigation}) => {
+  const route = useRoute()
+  console.log('abriu a tela de login')
   const toast = useToast()
   const [isValidEmail, setIsValidEmail] = useState(true)
   const [isValidPassword, setIsValidPassword] = useState(true)
@@ -20,6 +24,7 @@ const LoginScreen = ({navigation}) => {
       setIsValidEmail(false)
     }
   }, [credentials])
+
   const handleLogin = (value) => {
     setCredentials({...credentials, ...value})
     console.log(credentials)

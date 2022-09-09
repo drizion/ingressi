@@ -1,7 +1,7 @@
 // imports
+import { HStack, Center, Heading, Box, StatusBar, Divider, ScrollView, useToast } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { HStack, Center, Heading, Box, StatusBar, Divider, ScrollView } from 'native-base';
 
 // components
 import { HomeUserLevel } from '../components/home/HomeUserLevel';
@@ -13,6 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // export
 
 export default function HomeScreen({navigation}) {
+  console.log('abriu a homescreen')
+  const toast = useToast()
   const [name, setName] = useState('...')
   const [userData, setUserData] = useState({})
   useEffect(() => {
@@ -25,6 +27,12 @@ export default function HomeScreen({navigation}) {
     }
     const result = getData()
   }, [])
+  useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault()
+      return navigation.navigate('HomeScreen')
+    })
+  }, [navigation])
   return (
     <Box flex={1} safeAreaTop>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />

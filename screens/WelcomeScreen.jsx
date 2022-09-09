@@ -1,10 +1,30 @@
-import React from 'react';
-import { Platform } from 'react-native';
+import React, { useEffect } from 'react';
+import { Platform, BackHandler, Alert } from 'react-native';
 import { HStack, VStack, Center, Heading, Box, StatusBar, Divider, Text, Button, Spacer } from 'native-base';
 import { styles } from '../components/styles';
 import { SafeAreaTop } from '../components/SafeAreaTop';
+import { useRoute } from '@react-navigation/native';
 
-const WelcomeScreen = ({navigation}) => {
+const WelcomeScreen = ({route, navigation}) => {
+  console.log('abriu o welcome screen')
+  const backAction = () => {
+    Alert.alert("Atenção", "Você quer sair do app?", [
+      {
+        text: "Cancelar",
+        onPress: () => null,
+        style: "cancel"
+      },
+      { text: "Sair", onPress: () => BackHandler.exitApp() }
+    ]);
+    return true;
+  };
+  useEffect(() => {
+    if(route.name !== 'Welcome') {
+      BackHandler.addEventListener("hardwareBackPress", backAction);
+      return () => BackHandler.removeEventListener("hardwareBackPress", backAction);
+    }
+  }, [route]);
+
   return (
     <Box flex={1} safeArea>
         <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />

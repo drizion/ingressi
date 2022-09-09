@@ -8,6 +8,7 @@ import api from '../src/services';
 import { getErrorMessage } from '../src/helper/errors';
 
 const PostRegisterScreen = ({ route, navigation }) => {
+  console.log('abriu o post register')
   const toast = useToast()
   const [checkUsername, setCheckUsername] = useState(false)
   const [checkName, setCheckName] = useState(false)

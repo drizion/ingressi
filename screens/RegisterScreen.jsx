@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { HStack, ScrollView, Center, FormControl, Input, Radio, Stack, Heading, Box, StatusBar, Divider, Text, Button, Spacer, useToast } from 'native-base';
 import { isEmail } from '../src/handlers/handleRegister'; 
 import { styles } from '../components/styles';
+import { BackHandler } from 'react-native';
 
 const RegisterScreen = ({ navigation }) => {
   const toast = useToast()
@@ -38,7 +39,7 @@ const RegisterScreen = ({ navigation }) => {
       setCheckPassword(true)
     }
   }
-
+  
   const handleRegister = (value) => {
     setCredentials({...credentials, ...value})
     console.log(value)

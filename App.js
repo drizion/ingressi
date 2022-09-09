@@ -34,7 +34,7 @@ export default function App() {
     <NativeBaseProvider>
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Welcome">
+          <Stack.Navigator initialRouteName="check">
             <Stack.Screen
               name="Welcome"
               component={WelcomeScreen}
