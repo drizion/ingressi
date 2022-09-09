@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react'
 import api from '../src/services';
 
-const CheckLogin = ({navigation}) => {
+const CheckLogin = ({route, navigation}) => {
     const [localData, setLocalData] = useState(null)
     const handleLogout = async() => {
         await AsyncStorage.setItem('userdata', '')
@@ -22,7 +22,7 @@ const CheckLogin = ({navigation}) => {
                     if(res.error) {
                         navigation.navigate('Login')
                     } else {
-                        navigation.navigate('HomeScreen')
+                        navigation.navigate('HomeScreen', {userdata: res})
                     }
                     setLocalData(JSON.stringify(res))
                 }).catch((err) => {
@@ -37,8 +37,7 @@ const CheckLogin = ({navigation}) => {
   return (
     <VStack flex={1} justifyContent="center" alignItems="center">
         <Spinner size="lg" />
-        <Text mt={2}>Fazendo login...</Text>
-      {/* <Button onPress={() => handleLogout()}>deslogar</Button> */}
+        <Text mt={2}>Entrando</Text>
     </VStack>
   )
 }

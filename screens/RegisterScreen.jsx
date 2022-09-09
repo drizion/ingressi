@@ -5,6 +5,7 @@ import { styles } from '../components/styles';
 
 const RegisterScreen = ({ navigation }) => {
   const toast = useToast()
+  const [userType, setUserType] = useState({userType: 'ingressante'})
   const [checkPassword, setCheckPassword] = useState(false)
   const [isValidPassword, setIsValidPassword] = useState(true)
   const [isValidEmail, setIsValidEmail] = useState(true)
@@ -14,10 +15,10 @@ const RegisterScreen = ({ navigation }) => {
     rePassword: "",
     name: "",
     username: "",
-    userType: "",
+    userType: "ingressante"
   })
   useEffect(() => {
-    console.log(credentials)
+    console.log({...credentials, ...userType})
     if(credentials.email == '' || !!isEmail(credentials.email)){
       setIsValidEmail(true)
     } else {
@@ -28,7 +29,7 @@ const RegisterScreen = ({ navigation }) => {
     } else {
       setIsValidPassword(false)
     }
-  }, [credentials])
+  }, [credentials, userType])
   const repeatPassword = (password) => {
     handleRegister({rePassword: password})
     if(password == credentials.password) {
@@ -48,7 +49,7 @@ const RegisterScreen = ({ navigation }) => {
       if(!isEmail(credentials.email)) throw new Error('Você não inseriu um email válido')
       if(credentials.password.length < 8) throw new Error('A senha precisa no mínimo 8 dígitos')
       if(credentials.rePassword == '' || checkPassword) throw new Error('Você não repetiu a senha corretamente')
-      navigation.navigate('PostRegister', {credentials})
+      navigation.navigate('PostRegister', {credentials, userType})
     } catch (error) {
       toast.show({description: error.message})
     }
@@ -72,7 +73,7 @@ const RegisterScreen = ({ navigation }) => {
         <FormControl.ErrorMessage >As senhas não são iguais</FormControl.ErrorMessage>
       </FormControl>
       <FormControl mb={5}>
-        <Radio.Group onChange={userType => handleRegister({userType})} defaultValue="ingressante" name="usertype">
+        <Radio.Group onChange={newUserType => setUserType({userType: newUserType})} defaultValue="ingressante" name="usertype">
           <Radio colorScheme={'emerald'} value="ingressante" mb={2} size={'sm'}>
             Eu quero conhecer/estudar no IFC-CAS.
           </Radio>

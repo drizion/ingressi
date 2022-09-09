@@ -73,7 +73,7 @@ export default function App() {
   )
 }
 
-function AppTabs() {
+function AppTabs({navigation}) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

@@ -1,5 +1,5 @@
 // imports
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { HStack, Center, Heading, Box, StatusBar, Divider, ScrollView } from 'native-base';
 
@@ -9,8 +9,22 @@ import { HomeWelcome } from '../components/home/HomeWelcome';
 import ProfilePicture from '../components/ProfilePicture';
 import LevelCard from '../components/LevelCard';
 import HomeCard from '../components/HomeCard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // export
-export default function HomeScreen() {
+
+export default function HomeScreen({navigation}) {
+  const [name, setName] = useState('...')
+  const [userData, setUserData] = useState({})
+  useEffect(() => {
+    const getData = async () => {
+      const data = await AsyncStorage.getItem('userdata')
+      const dataParse = JSON.parse(data)
+      setUserData(dataParse)
+      console.log({dataParse})
+      setName(dataParse.name.split(' ')[0])
+    }
+    const result = getData()
+  }, [])
   return (
     <Box flex={1} safeAreaTop>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
@@ -24,7 +38,7 @@ export default function HomeScreen() {
             <ProfilePicture />
             <HomeUserLevel progress={50} level={2} />
           </HStack>
-          <HomeWelcome welcome="Bem vinda" name="Isis" />
+          <HomeWelcome welcome="Olá novamente" name={name} />
           <Divider thickness={2} bg={'#101118'} />
           <LevelCard currentLevel="1" />
           <HStack w="100%" mt={4} justifyContent="space-between">

@@ -11,10 +11,9 @@ const PostRegisterScreen = ({ route, navigation }) => {
   const toast = useToast()
   const [checkUsername, setCheckUsername] = useState(false)
   const [checkName, setCheckName] = useState(false)
-  const { credentials } = route.params
+  const { credentials, userType } = route.params
   const [creds, setCreds] = useState(credentials)
   if (!credentials) return navigation.navigate('Register')
-
   const handleRegister = (value) => {
     setCreds({ ...creds, ...value })
   }
@@ -35,7 +34,8 @@ const PostRegisterScreen = ({ route, navigation }) => {
         name: creds.name,
         password: creds.password,
         username: creds.username,
-        profilePicture: creds.profilePicture
+        profilePicture: creds.profilePicture,
+        userLevel: userType.userType
       }).then(async(res) => {
         if(!res.error) {
           await AsyncStorage.setItem('userdata', JSON.stringify(res))
