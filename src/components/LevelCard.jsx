@@ -7,17 +7,19 @@ import {
   VStack,
   HStack,
   Center,
+  Pressable,
 } from 'native-base';
 import { styles } from './styles';
 
 const LevelCard = (props) => {
   return (
-    <Box
+    <Pressable
       mt={8}
       w="100%"
       bg="#FFFFFF"
       p={4}
       style={styles.brutalShadow}
+      onPress={() => console.log("I'm Pressed")}
     >
       <HStack>
         <Box
@@ -33,13 +35,13 @@ const LevelCard = (props) => {
         </Box>
         <VStack ml={2}>
           <Text>Missão {props.currentLevel}</Text>
-          <Heading>Decisão do curso</Heading>
+          <Heading>{props.title}</Heading>
         </VStack>
       </HStack>
       <VStack mt={4}>
         <HStack justifyContent="space-between">
-          <Text>2 de 4 tarefas completas.</Text>
-          <Text>50%</Text>
+          <Text>{props.currentLevel} de {props.max} tarefas completas.</Text>
+          <Text>{props.percent}%</Text>
         </HStack>
         <Progress
           borderColor="#000"
@@ -47,7 +49,7 @@ const LevelCard = (props) => {
           bg="coolGray.100"
           // size="2xl"
           height={6}
-          value={50}
+          value={props.percent}
           borderWidth={2}
           _filledTrack={{
             bg: 'lime.500',
@@ -55,7 +57,7 @@ const LevelCard = (props) => {
           }}
         />
       </VStack>
-    </Box>
+    </Pressable>
   );
 };
 

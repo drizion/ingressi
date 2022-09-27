@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { Platform, BackHandler, Alert } from 'react-native';
 import { HStack, VStack, Center, Heading, Box, StatusBar, Divider, Text, Button, Spacer } from 'native-base';
-import { styles } from '../components/styles';
-import { SafeAreaTop } from '../components/SafeAreaTop';
-import { useRoute } from '@react-navigation/native';
+import { styles } from '../../components/styles';
 
 const WelcomeScreen = ({route, navigation}) => {
   console.log('abriu o welcome screen')

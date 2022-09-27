@@ -1,6 +1,3 @@
-import { useToast } from "native-base";
-
-
 export const isEmail = (email) => {
     var check = String(email)
         .toLowerCase()

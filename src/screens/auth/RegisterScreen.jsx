@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { HStack, ScrollView, Center, FormControl, Input, Radio, Stack, Heading, Box, StatusBar, Divider, Text, Button, Spacer, useToast } from 'native-base';
-import { isEmail } from '../src/handlers/handleRegister'; 
-import { styles } from '../components/styles';
+import { isEmail } from '../../handlers/handleRegister'; 
+import { styles } from '../../components/styles';
 import { BackHandler } from 'react-native';
 
 const RegisterScreen = ({ navigation }) => {
@@ -50,9 +50,9 @@ const RegisterScreen = ({ navigation }) => {
       if(!isEmail(credentials.email)) throw new Error('Você não inseriu um email válido')
       if(credentials.password.length < 8) throw new Error('A senha precisa no mínimo 8 dígitos')
       if(credentials.rePassword == '' || checkPassword) throw new Error('Você não repetiu a senha corretamente')
-      navigation.navigate('PostRegister', {credentials, userType})
-    } catch (error) {
-      toast.show({description: error.message})
+      //fazer login com api
+    } catch (e) {
+      console.log(e)
     }
 }
   return (

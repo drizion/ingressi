@@ -1,38 +1,20 @@
 // imports
-import { HStack, Center, Heading, Box, StatusBar, Divider, ScrollView, useToast } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { HStack, VStack, Center, Heading, Box, StatusBar, Divider, ScrollView, useToast, Text } from 'native-base';
 import { Platform } from 'react-native';
 
 // components
-import { HomeUserLevel } from '../components/home/HomeUserLevel';
-import { HomeWelcome } from '../components/home/HomeWelcome';
-import ProfilePicture from '../components/ProfilePicture';
-import LevelCard from '../components/LevelCard';
-import HomeCard from '../components/HomeCard';
+import { HomeWelcome } from '../../components/home/HomeWelcome';
+import ProfilePicture from '../../components/ProfilePicture';
+import LevelCard from '../../components/LevelCard';
+import HomeCard from '../../components/HomeCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthContext from '../../contexts/auth';
+import { LevelBar } from '../../components/LevelBar';
 // export
 
 export default function HomeScreen({navigation}) {
-  console.log('abriu a homescreen')
-  const toast = useToast()
-  const [name, setName] = useState('...')
-  const [userData, setUserData] = useState({})
-  useEffect(() => {
-    const getData = async () => {
-      const data = await AsyncStorage.getItem('userdata')
-      const dataParse = JSON.parse(data)
-      setUserData(dataParse)
-      console.log({dataParse})
-      setName(dataParse.name.split(' ')[0])
-    }
-    const result = getData()
-  }, [])
-  useEffect(() => {
-    navigation.addListener('beforeRemove', (e) => {
-      e.preventDefault()
-      return navigation.navigate('HomeScreen')
-    })
-  }, [navigation])
+  const { user } = useContext(AuthContext)
   return (
     <Box flex={1} safeAreaTop>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
@@ -43,12 +25,17 @@ export default function HomeScreen({navigation}) {
             alignItems="center"
             w="100%"
           >
-            <ProfilePicture />
-            <HomeUserLevel progress={50} level={2} />
+            <ProfilePicture url={user.picture} />
+            <LevelBar progress={user.percent} level={user.level}/>
           </HStack>
-          <HomeWelcome welcome="Olá novamente" name={name} />
+          <HomeWelcome welcome="Olá novamente" name={user.name.split(' ')[0]} loaded={!!user} />
           <Divider thickness={2} bg={'#101118'} />
-          <LevelCard currentLevel="1" />
+          <LevelCard 
+            currentLevel={user.mission.id}
+            max={user.mission.max}
+            percent={user.mission.percent}
+            title={user.mission.title}
+          />
           <HStack w="100%" mt={4} justifyContent="space-between">
             <HomeCard
               iconName="school"
@@ -79,6 +66,9 @@ export default function HomeScreen({navigation}) {
             cardBgColor="#3E9F88"
           />
         </HStack>
+        {/* <Text>
+          debug: {JSON.stringify(userData, null, 2)}
+        </Text> */}
       </ScrollView>
     </Box>
   );

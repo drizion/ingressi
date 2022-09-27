@@ -11,15 +11,24 @@ export const styles = StyleSheet.create({
       borderWidth: 0.5,
       borderRightWidth: 2.5,
       borderBottomWidth: 2.5,
-      borderRadius: 5,
+      borderRadius: 5
     },
     profilePicture: {
-      borderRadius: 4,
-      borderColor: '#8E8484',
-      borderWidth: 2
+      borderWidth: 1.4,
+      borderColor: '#000000'
     },
     elevation: {
       elevation: 10,
       shadowColor: '#000000'
+    },
+    image: {
+      borderColor: "#000",
+      borderWidth: 2,
+      borderRadius: 8
+    },
+    badge: {
+      borderWidth: 0.8, 
+      borderColor: "#000", 
+      borderRadius: 5
     }
   })

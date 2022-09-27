@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HStack, VStack, Center, Heading, Box, StatusBar, InputLeftAddon, Text, Button, Spacer, Avatar, FormControl, Input, ScrollView, KeyboardAvoidingView, useToast, Divider } from 'native-base';
-import { styles } from '../components/styles';
-import { ScrollFix } from '../components/iosBug';
-import { isValidUsername } from '../src/handlers/handleRegister';
-import api from '../src/services';
-import { getErrorMessage } from '../src/helper/errors';
+import { styles } from '../../components/styles';
+import { ScrollFix } from '../../components/iosBug';
+import { isValidUsername } from '../../handlers/handleRegister';
 
 const PostRegisterScreen = ({ route, navigation }) => {
   console.log('abriu o post register')
@@ -30,22 +28,7 @@ const PostRegisterScreen = ({ route, navigation }) => {
     try {
       if (creds.name.length < 1) throw new Error('Você precisa colocar seu nome.')
       if (!isValidUsername(creds.username)) throw new Error('O username é inválido')
-      api.register({
-        email: creds.email,
-        name: creds.name,
-        password: creds.password,
-        username: creds.username,
-        profilePicture: creds.profilePicture,
-        userLevel: userType.userType
-      }).then(async(res) => {
-        if(!res.error) {
-          await AsyncStorage.setItem('userdata', JSON.stringify(res))
-          navigation.navigate('check')
-        } else {
-          toast.show({description: getErrorMessage(res.errorCode)})
-        }
-      })
-      .catch((err) => console.log(JSON.stringify(err)))
+      navigation.navigate('check')
     } catch (error) {
       toast.show({ description: error.message })
     }
