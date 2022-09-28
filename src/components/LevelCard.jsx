@@ -14,12 +14,15 @@ import { styles } from './styles';
 const LevelCard = (props) => {
   return (
     <Pressable
-      mt={8}
       w="100%"
+      mt={8}
       bg="#FFFFFF"
       p={4}
       style={styles.brutalShadow}
-      onPress={() => console.log("I'm Pressed")}
+      onPress={props.onPress}
+      _pressed={{
+        backgroundColor: "#F0F0F0"
+      }}
     >
       <HStack>
         <Box

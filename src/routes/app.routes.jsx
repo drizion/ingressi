@@ -4,11 +4,16 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { styles } from '../components/styles';
 import { tabIcon, iconColor, tabColor } from '../TabConfig';
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 import HomeScreen from '../screens/app/HomeScreen';
 import MissionScreen from '../screens/app/MissionScreen';
 import NotificationScreen from '../screens/app/NotificationScreen';
 import ProfileScreen from '../screens/app/ProfileScreen';
+import TaskScreen from '../screens/app/TaskScreen';
+import CampusScreen from '../screens/app/CampusScreen';
+import PostScreen from '../screens/app/PostScreen';
+import CourseScreen from '../screens/app/CourseScreen';
 
 const tabOptions = {
   headerShown: false,
@@ -16,8 +21,9 @@ const tabOptions = {
 }
 
 const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
 
-const AppRoutes = () => {
+const BottomTabs = () => {
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
@@ -34,6 +40,43 @@ const AppRoutes = () => {
 			<Tab.Screen name="Profile" component={ProfileScreen} options={tabOptions} />
 		</Tab.Navigator>
 	)
+}
+
+const AppRoutes = () => {
+    return (
+        <Stack.Navigator initialRouteName="Tabs">
+            <Stack.Screen
+            name="Tabs"
+            component={BottomTabs}
+            options={{ headerShown: false }}
+            />
+			<Stack.Screen
+            name="Mission"
+            component={PostScreen}
+            options={{ headerShown: false }}
+            />
+			<Stack.Screen
+            name="Task"
+            component={TaskScreen}
+            options={{ headerShown: false }}
+            />
+			<Stack.Screen
+            name="Post"
+            component={PostScreen}
+            options={{ headerShown: false }}
+            />
+			<Stack.Screen
+            name="Campus"
+            component={CampusScreen}
+            options={{ headerShown: false }}
+            />
+			<Stack.Screen
+            name="Course"
+            component={CourseScreen}
+            options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+    )
 }
 
 export default AppRoutes

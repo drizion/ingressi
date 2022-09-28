@@ -35,6 +35,7 @@ export default function HomeScreen({navigation}) {
             max={user.mission.max}
             percent={user.mission.percent}
             title={user.mission.title}
+            onPress={() => navigation.navigate('Task')}
           />
           <HStack w="100%" mt={4} justifyContent="space-between">
             <HomeCard
@@ -42,12 +43,14 @@ export default function HomeScreen({navigation}) {
               text="Campus"
               cardBorderColor="#193E1F"
               cardBgColor="#59B065"
+              onPress={() => navigation.navigate('Campus')}
             />
             <HomeCard
               iconName="article"
               text="Postagens"
               cardBorderColor="#69312E"
               cardBgColor="#D05D56"
+              onPress={() => navigation.navigate('Post')}
             />
           </HStack>
         </Center>
@@ -58,12 +61,14 @@ export default function HomeScreen({navigation}) {
             text="Hospedagem"
             cardBorderColor="#0A4459"
             cardBgColor="#3E95B5"
+            onPress={() => navigation.navigate('Course')}
           />
           <HomeCard
             iconName="settings-ethernet"
             text="Informática"
             cardBorderColor="#17473B"
             cardBgColor="#3E9F88"
+            onPress={() => navigation.navigate('Course')}
           />
         </HStack>
         {/* <Text>

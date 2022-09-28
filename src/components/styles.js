@@ -7,6 +7,12 @@ export const styles = StyleSheet.create({
       borderBottomWidth: 4,
       borderRadius: 10,
     },
+    reversedBrutalShadow: {
+      borderWidth: 2,
+      borderLeftWidth: 4,
+      borderTopWidth: 4,
+      borderRadius: 10,
+    },
     brutalButton: {
       borderWidth: 0.5,
       borderRightWidth: 2.5,
@@ -22,9 +28,11 @@ export const styles = StyleSheet.create({
       shadowColor: '#000000'
     },
     image: {
-      borderColor: "#000",
-      borderWidth: 2,
-      borderRadius: 8
+      borderColor: "#000000",
+      borderWidth: 1.5,
+      borderRightWidth: 3,
+      borderBottomWidth: 3,
+      borderRadius: 5
     },
     badge: {
       borderWidth: 0.8, 
