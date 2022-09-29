@@ -50,7 +50,7 @@ export default function HomeScreen({navigation}) {
               text="Postagens"
               cardBorderColor="#69312E"
               cardBgColor="#D05D56"
-              onPress={() => navigation.navigate('Post')}
+              onPress={() => navigation.navigate('Posts')}
             />
           </HStack>
         </Center>
@@ -61,19 +61,16 @@ export default function HomeScreen({navigation}) {
             text="Hospedagem"
             cardBorderColor="#0A4459"
             cardBgColor="#3E95B5"
-            onPress={() => navigation.navigate('Course')}
+            onPress={() => navigation.navigate('Course', {name: "Hospedagem", text: "Lorem ipsum"})}
           />
           <HomeCard
             iconName="settings-ethernet"
             text="Informática"
             cardBorderColor="#17473B"
             cardBgColor="#3E9F88"
-            onPress={() => navigation.navigate('Course')}
+            onPress={() => navigation.navigate('Course', {name: "Informática para Internet", text: "Lorem ipsum"})}
           />
         </HStack>
-        {/* <Text>
-          debug: {JSON.stringify(userData, null, 2)}
-        </Text> */}
       </ScrollView>
     </Box>
   );

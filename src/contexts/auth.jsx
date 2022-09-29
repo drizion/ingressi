@@ -4,8 +4,8 @@ const AuthContext = createContext({})
 
 export const AuthProvider = ({children}) => {
     const response = {
-        name: "Gabriel da silva",
-        picture: "https://avatars.githubusercontent.com/u/84392895?s=100&v=4",
+        name: "Nome",
+        picture: "https://m.cricbuzz.com/a/img/v1/192x192/i1/c182026/tanaka-chivanga.jpg",
         level: 1,
         percent: 16,
         mission: {

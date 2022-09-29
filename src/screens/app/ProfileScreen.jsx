@@ -12,11 +12,11 @@ const ProfileScreen = ({}) => {
     
   }
   return (
-    <SafeAreaTop2>
+    <Box flex={1} safeAreaTop>
         <Center>
             <Button onPress={() => console.log(signed)}>Sair</Button>
         </Center>
-    </SafeAreaTop2>
+    </Box>
   )
 }
 

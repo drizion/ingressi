@@ -1,9 +1,12 @@
 import React from 'react'
-import { Box, Image, Stack, Heading, HStack, Text, Badge } from 'native-base'
+import { Box, Image, Stack, Heading, HStack, Text, Badge, Pressable } from 'native-base'
 import { styles } from './styles';
 
 const RowCard = (props) => (
-    <Box flex={1} flexDirection='row'>
+    <Pressable flex={1} backgroundColor={"transparent"} rounded="lg" flexDirection='row'
+      _pressed={{backgroundColor: "gray.200"}}
+      onPress={props.onPress}
+    >
       <Image w={'20%'} rounded={'lg'} source={{
         uri: props.imageUrl
       }} alt="image" style={styles.image} />
@@ -23,7 +26,7 @@ const RowCard = (props) => (
           </HStack>
         </Stack>
       </Stack>
-    </Box>
+    </Pressable>
   );
 
 export default RowCard

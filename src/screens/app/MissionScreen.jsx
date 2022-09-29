@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { VStack, Heading, Stack, Divider, ScrollView } from 'native-base';
+import { VStack, Heading, Stack, Divider, ScrollView, Box } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../../contexts/auth';
 import RowCard from '../../components/RowCard';
@@ -9,7 +9,8 @@ import Header from '../../components/Header';
 const MissionScreen = () => {
   const { user } = useContext(AuthContext)
   return (
-    <ScrollView safeAreaTop px={5}>
+    <Box flex={1} safeAreaTop>
+    <ScrollView px={5}>
       <Header picture={user.picture} />
       <Heading mb={5}>Missões</Heading>
 
@@ -18,6 +19,7 @@ const MissionScreen = () => {
       <Heading mb={5}>em breve</Heading>
 
     </ScrollView>
+    </Box>
   )
 }
 

@@ -14,6 +14,7 @@ import TaskScreen from '../screens/app/TaskScreen';
 import CampusScreen from '../screens/app/CampusScreen';
 import PostScreen from '../screens/app/PostScreen';
 import CourseScreen from '../screens/app/CourseScreen';
+import Post from '../screens/app/Post';
 
 const tabOptions = {
   headerShown: false,
@@ -61,8 +62,13 @@ const AppRoutes = () => {
             options={{ headerShown: false }}
             />
 			<Stack.Screen
-            name="Post"
+            name="Posts"
             component={PostScreen}
+            options={{ headerShown: false }}
+            />
+            <Stack.Screen
+            name="Post"
+            component={Post}
             options={{ headerShown: false }}
             />
 			<Stack.Screen
