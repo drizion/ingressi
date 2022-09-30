@@ -1,5 +1,5 @@
 import React from 'react';
-import { HStack, IconButton } from 'native-base';
+import { Box, HStack, IconButton } from 'native-base';
 import ProfilePicture from './ProfilePicture';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native';
@@ -16,8 +16,8 @@ const Header = (props) => {
         w="100%"
         pt={1}
         mb={3}>
-        <IconButton variant={"ghost"} colorScheme={"light"} size={'lg'} _icon={{ as: Ionicons, name: 'arrow-back' }} onPress={() => handleGoBack()} />
-        <ProfilePicture url={props.picture} />
+        {props.removeBack ? <Box /> : <IconButton variant={"ghost"} colorScheme={"light"} size={'lg'} _icon={{ as: Ionicons, name: 'arrow-back' }} onPress={() => handleGoBack()} />}
+        <ProfilePicture onPress={() => navigation.navigate('Profile')} url={props.picture} />
       </HStack>
     )
   }

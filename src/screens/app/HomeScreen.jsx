@@ -25,7 +25,7 @@ export default function HomeScreen({navigation}) {
             alignItems="center"
             w="100%"
           >
-            <ProfilePicture url={user.picture} />
+            <ProfilePicture onPress={() => navigation.navigate('Profile')} url={user.picture} />
             <LevelBar progress={user.percent} level={user.level}/>
           </HStack>
           <HomeWelcome welcome="Olá novamente" name={user.name.split(' ')[0]} loaded={!!user} />
