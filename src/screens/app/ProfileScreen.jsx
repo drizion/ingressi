@@ -8,8 +8,8 @@ import { styles } from '../../components/styles';
 
 const ProfileScreen = ({}) => {
   const navigation = useNavigation()
-  const { signed, user } = useContext(AuthContext)
-  
+  const { signed, user, posts, tasks, setSigned } = useContext(AuthContext)
+
   return (
     <Box px={5} py={10} flex={1} safeAreaTop>
         <Center>
@@ -22,7 +22,7 @@ const ProfileScreen = ({}) => {
             <Button style={styles.brutalButton} size={'lg'}>Alterar a foto de perfil</Button>
             <Button style={styles.brutalButton} size={'lg'}>Segurança e Privacidade</Button>
             <Button style={styles.brutalButton} size={'lg'}>Relatar um problema</Button>
-            <Button style={styles.brutalButton} size={'lg'} onPress={() => console.log(signed)}>Sair da conta</Button>
+            <Button style={styles.brutalButton} size={'lg'} onPress={() => setSigned(false)}>Sair da conta</Button>
           </Stack>
     </Box>
   )

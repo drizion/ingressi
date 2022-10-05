@@ -11,7 +11,7 @@ const LoginScreen = ({navigation}) => {
   const route = useRoute()
   console.log('abriu a tela de login')
   const toast = useToast()
-  const { signed } = useContext(AuthContext)
+  const { signed, setSigned } = useContext(AuthContext)
   const [isValidEmail, setIsValidEmail] = useState(true)
   const [isValidPassword, setIsValidPassword] = useState(true)
   const [credentials, setCredentials] = useState({
@@ -33,6 +33,7 @@ const LoginScreen = ({navigation}) => {
   const handleSubmit = () => {
     // fazer login na api
     console.log(signed)
+    setSigned(true)
   }
   return (
     <ScrollView px={5} pt={5} flex={1} safeArea>

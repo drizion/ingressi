@@ -7,6 +7,7 @@ import BigCard from '../../components/BigCard';
 import Header from '../../components/Header';
 import { styles } from '../../components/styles';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const LevelItem = (props) => {
   return (
@@ -30,6 +31,7 @@ const TaskCheckbox = (props) => {
 
 const MissionScreen = () => {
   const { user } = useContext(AuthContext)
+  const navigation = useNavigation()
   return (
     <Box flex={1} safeAreaTop>
       <ScrollView>
@@ -61,7 +63,7 @@ const MissionScreen = () => {
 
           <Heading mb={5}>Missões</Heading>
 
-          <Pressable _pressed={{bg: 'gray.200'}} py={5} px={4} bg={'white'} w={'100%'} style={styles.brutalShadow}>
+          <Pressable onPress={() => navigation.navigate('Task')} _pressed={{bg: 'gray.200'}} py={5} px={4} bg={'white'} w={'100%'} style={styles.brutalShadow}>
             <HStack mb={5}>
               <Icon size={'2xl'} color={"black"} mr={3} mt={2} as={Ionicons} name="home" />
               <VStack>

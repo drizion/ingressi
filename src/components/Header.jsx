@@ -17,7 +17,7 @@ const Header = (props) => {
         pt={1}
         mb={3}>
         {props.removeBack ? <Box /> : <IconButton variant={"ghost"} colorScheme={"light"} size={'lg'} _icon={{ as: Ionicons, name: 'arrow-back' }} onPress={() => handleGoBack()} />}
-        <ProfilePicture onPress={() => navigation.navigate('Profile')} url={props.picture} />
+        {props.removeProfile ? <Box /> : <ProfilePicture onPress={() => navigation.navigate('Profile')} url={props.picture} />}
       </HStack>
     )
   }

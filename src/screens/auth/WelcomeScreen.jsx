@@ -32,7 +32,7 @@ const WelcomeScreen = ({route, navigation}) => {
         <Box px={5} flex={1}>
             <Heading size={"2xl"}>Vamos começar?</Heading>
             <Divider my={3}/>
-            <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum aut aliquid architecto minima rerum? Accusamus placeat vel, eos qui quam quaerat! Quos magni assumenda exercitationem totam perferendis nobis dignissimos vel!</Text>
+            <Text>O fim do ensino fundamental é uma etapa muito importante nas nossas vidas, é um momento de escolhas. Já imaginou fazer o ensino médio com um curso técnico que já prepara você para o mercado de trabalho com ensino de qualidade (e o melhor, 100% gratuito)? Crie uma conta e conheça nossos cursos disponíveis :D</Text>
             <Spacer />
             <Box mb={3}>
               <Button colorScheme={'emerald'} onPress={() => navigation.navigate('Register')} style={styles.brutalButton} marginBottom={2} size={'lg'}>Sou novo por aqui</Button>

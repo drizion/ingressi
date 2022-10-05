@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ScrollView, Heading, Divider, Text, Box } from 'native-base';
+import { ScrollView, Heading, Divider, Text, Box, FlatList } from 'native-base';
 import Header from '../../components/Header';
 import AuthContext from '../../contexts/auth';
 
@@ -7,7 +7,7 @@ const CourseScreen = (props) => {
   const { user } = useContext(AuthContext)
   return (
     <Box flex={1} safeAreaTop>
-    <ScrollView safeAreaTop px={5}>
+    <ScrollView px={5}>
       <Header picture={user.picture} />
       <Heading>{props.route.params.name}</Heading>
 
