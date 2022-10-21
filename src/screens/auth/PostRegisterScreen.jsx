@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HStack, VStack, Center, Heading, Box, StatusBar, InputLeftAddon, Text, Button, Spacer, Avatar, FormControl, Input, ScrollView, KeyboardAvoidingView, useToast, Divider } from 'native-base';
 import { styles } from '../../components/styles';
 import { ScrollFix } from '../../components/iosBug';
 import { isValidUsername } from '../../handlers/handleRegister';
+import AuthContext from '../../contexts/auth';
 
 const PostRegisterScreen = ({ route, navigation }) => {
   console.log('abriu o post register')
   const toast = useToast()
+  const { signed, setSigned } = useContext(AuthContext)
   const [checkUsername, setCheckUsername] = useState(false)
   const [checkName, setCheckName] = useState(false)
   const { credentials, userType } = route.params
@@ -62,7 +64,7 @@ const PostRegisterScreen = ({ route, navigation }) => {
                 <FormControl.ErrorMessage>Formato incorreto. Use 4-20 caracteres, sem espaços, apenas letras, números, pontos e traços.</FormControl.ErrorMessage>
               </FormControl>
               <Spacer />
-              <Button colorScheme={'emerald'} onPress={() => handleSubmit()} style={styles.brutalButton} marginBottom={5} size={'lg'}>Tudo pronto!</Button>
+              <Button colorScheme={'emerald'} onPress={() => setSigned(true)} style={styles.brutalButton} marginBottom={5} size={'lg'}>Tudo pronto!</Button>
           </ScrollFix>
           </KeyboardAvoidingView>
         </Box>

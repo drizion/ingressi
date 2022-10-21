@@ -7,6 +7,13 @@ export const styles = StyleSheet.create({
       borderBottomWidth: 4,
       borderRadius: 10,
     },
+    brutalScroll: {
+      borderWidth: 2,
+      borderRightWidth: 4,
+      borderRadius: 20,
+      borderBottomLeftRadius: 5,
+      borderBottomRightRadius: 5,
+    },
     reversedBrutalShadow: {
       borderWidth: 2,
       borderLeftWidth: 4,

@@ -83,7 +83,7 @@ const RegisterScreen = ({ navigation }) => {
           </Radio>
         </Radio.Group>
       </FormControl>
-      <Button colorScheme={'emerald'} style={styles.brutalButton} onPress={() => handleSubmit()} size={'lg'} mb={2}>Continuar inscrição</Button>
+      <Button colorScheme={'emerald'} style={styles.brutalButton} onPress={() => navigation.navigate('PostRegister', { credentials: { username: ''} })} size={'lg'} mb={2}>Continuar inscrição</Button>
       <Button colorScheme={'emerald'} onPress={() => navigation.navigate('Login')} size={'lg'} variant={"link"} mb={5}>Já tem uma conta? Clique aqui.</Button>
     </ScrollView>
   )
