@@ -9,10 +9,10 @@ const BigCard = (props) => {
       py={1}
       onPress={props.onPress}
       _pressed={{backgroundColor: "gray.200"}}>
-        <Box w='100%' h={200}>
+        <Box w='100%' h={200} style={styles.image}>
           <Image source={{
             uri: props.imageUrl
-          }} alt="Alternate Text" size="100%" style={styles.image} />
+          }} alt="Alternate Text" size="100%" style={{borderRadius: 2}} />
         </Box>
         <Heading px={1} mt={1.5}>{props.title}</Heading>
         <Text px={1} numberOfLines={2}>{props.description}</Text>

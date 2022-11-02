@@ -4,17 +4,8 @@ const AuthContext = createContext({})
 
 export const AuthProvider = (props) => {
   const [user, setUser] = useState({
-    name: "Estudante",
-    picture: "https://m.cricbuzz.com/a/img/v1/192x192/i1/c182026/tanaka-chivanga.jpg",
-    level: 1,
-    percent: 16,
-    mission: {
-      id: 1,
-      max: 4,
-      percent: 0,
-      title: "O inicio",
-      thumbnail: "https://avatars.githubusercontent.com/u/84392895?s=500&v=4"
-    }
+    name: "Gabriel",
+    picture: "https://m.cricbuzz.com/a/img/v1/192x192/i1/c182026/tanaka-chivanga.jpg"
   })
   const [signed, setSigned] = useState(!!user)
   const [tasks, setTasks] = useState([{
@@ -67,7 +58,7 @@ export const AuthProvider = (props) => {
     type: "estrutura",
     checked: false,
     duration: "5 min"
-  },{
+  }, {
     id: 2,
     title: "Biblioteca",
     description: "A biblioteca do campus conta com mais de...",
@@ -75,7 +66,7 @@ export const AuthProvider = (props) => {
     type: "estrutura",
     checked: false,
     duration: "5 min"
-  },{
+  }, {
     id: 3,
     title: "Programa de Auxílio Estudantil",
     description: "O programa de Auxílio Estudantil é destinado para...",
@@ -83,7 +74,7 @@ export const AuthProvider = (props) => {
     type: "vidaEstudantil",
     checked: false,
     duration: "30 min"
-  },{
+  }, {
     id: 4,
     title: "Horario Ensino Médio",
     description: "Horário atualizado para os cursos técnicos integrados ao ensino médio.",
@@ -91,7 +82,7 @@ export const AuthProvider = (props) => {
     type: "vidaEstudantil",
     checked: false,
     duration: "5 min"
-  },{
+  }, {
     id: 5,
     title: "Provas Anteriores",
     description: "Veja as provas de classificação dos anos anteriores.",
@@ -99,7 +90,7 @@ export const AuthProvider = (props) => {
     type: "ingresso",
     checked: false,
     duration: "30 min"
-  },{
+  }, {
     id: 6,
     title: "Edital de ingresso 2022",
     description: "Leia cuidadosamente o edital de ingresso.",
@@ -108,8 +99,42 @@ export const AuthProvider = (props) => {
     checked: false,
     duration: "50 min"
   }])
+  const [mission, setMission] = useState({
+    "level": 1,
+    "title": "O início da jornada!",
+    "description": "O fim do ensino fundamental é uma etapa muito importante na nossa vida, pois é um momento de escolhas... Portanto é necessário evitar que a vida se torne complexa devido a falta de acessibilidade das edições anteriores. Boa sorte!",
+    "tasks": [{
+      "taskId": 1,
+      "title": "Leia a página de boas vindas",
+      "description": "leia o post com titulo 'iniciando a jornada', para descobrir mais sobre o IFC",
+      "checked": true
+    }, {
+      "taskId": 2,
+      "title": "Como funciona os cursos técnicos integrados ao ensino médio?",
+      "description": "leia o post com titulo 'tecnico integrado', para descobrir mais sobre o IFC",
+      "checked": false
+    }, {
+      "taskId": 3,
+      "title": "Conheça os cursos disponíveis no campus",
+      "description": "leia o post com titulo 'cursos disponiveis', para descobrir mais sobre o IFC",
+      "checked": false
+    }]
+  })
+  const [levels, setLevels] = useState([{
+      "number": 1,
+      "text": "O inicio",
+      "color": "red"
+    },{
+      "number": 2,
+      "text": "O teste",
+      "color": "yellow"
+    },{
+      "number": 3,
+      "text": "Outro",
+      "color": "green"
+    }])
   return (
-    <AuthContext.Provider value={{ signed, setSigned, user, setUser, tasks, posts, campusPosts }}>{props.children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ signed, setSigned, user, levels, setUser, tasks, mission, posts, campusPosts }}>{props.children}</AuthContext.Provider>
   )
 }
 

@@ -1,0 +1,19 @@
+{
+    "status": 200,
+    "message": "Componente níveis carregado",
+    "result": {
+        "levels": [{
+            "number": 1,
+            "text": "O inicio",
+            "color": "red"
+          },{
+            "number": 2,
+            "text": "O teste",
+            "color": "yellow"
+          },{
+            "number": 3,
+            "text": "Outro",
+            "color": "green"
+          }]
+    }
+}

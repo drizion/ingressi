@@ -14,7 +14,7 @@ import { LevelBar } from '../../components/LevelBar';
 // export
 
 export default function HomeScreen({navigation}) {
-  const { user } = useContext(AuthContext)
+  const { user, mission, levels } = useContext(AuthContext)
   return (
     <Box flex={1} safeAreaTop>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
@@ -26,15 +26,15 @@ export default function HomeScreen({navigation}) {
             w="100%"
           >
             <ProfilePicture onPress={() => navigation.navigate('Profile')} url={user.picture} />
-            <LevelBar progress={user.percent} level={user.level}/>
+            <LevelBar progress={(mission.level*100)/levels.length} level={mission.level}/>
           </HStack>
           <HomeWelcome welcome="Olá novamente" name={user.name.split(' ')[0]} loaded={!!user} />
           <Divider thickness={2} bg={'#101118'} />
           <LevelCard 
-            currentLevel={user.mission.id}
-            max={user.mission.max}
-            percent={user.mission.percent}
-            title={user.mission.title}
+            currentLevel={mission.level}
+            completed={mission.tasks.filter(task => task.checked).length}
+            length={mission.tasks.length}
+            title={mission.title}
             onPress={() => navigation.navigate('Task')}
           />
           <HStack w="100%" mt={4} justifyContent="space-between">

@@ -20,13 +20,17 @@ const tasks = [{
   checked: false
 }]
 
-const TaskScreen = () => {
-  const { user } = useContext(AuthContext)
+const TaskScreen = ({navigation}) => {
+  const { user, mission, levels } = useContext(AuthContext)
   const [showModal, setShowModal] = useState(false)
-  const [taskDescription, setTaskDescription] = useState("")
-  function handleModal(task){
-    setTaskDescription(task.description)
+  const [task, setTask] = useState({})
+  function handleModal(taskObj){
+    setTask(taskObj)
     setShowModal(true)
+  }
+  function closeModal(task){
+    setShowModal(false)
+    navigation.navigate('Posts')
   }
   return (
     <Box flex={1} safeAreaTop backgroundColor={'#fca5a5'}>
@@ -35,33 +39,30 @@ const TaskScreen = () => {
         <Box px={5} pb={7} bg={'red.300'}>
           <Header picture={user.picture} />
           <HStack mt={3}>
-            <Heading mr={2} size={'2xl'}>1º</Heading>
+            <Heading mr={2} size={'2xl'}>{mission.level}º</Heading>
             <Stack>
               <Heading size={'lg'}>Missão</Heading>
-              <Text fontSize={'sm'}>Nível 1</Text>
+              <Text fontSize={'sm'}>Nível {mission.level}</Text>
             </Stack>
           </HStack>
         </Box>
         <Box w={'100%'} flex={1} style={styles.brutalScroll} bg={'white'} p={5} pb={5}>
-          <Heading size={'lg'} mb={3}>O início da jornada</Heading>
-          <Text mb={5} fontSize={'md'}>O fim do ensino fundamental é uma etapa muito importante na nossa vida, pois é um momento de escolhas... Portanto é necessário evitar que a vida se torne complexa devido a falta de acessibilidade das edições anteriores. Boa sorte!</Text>
+          <Heading size={'lg'} mb={3}>{mission.title}</Heading>
+          <Text mb={5} fontSize={'md'}>{mission.description}</Text>
           <Box mb={4} style={styles.brutalShadow}>
             <Box m={4}>
               <Heading size={'md'}>Tarefas</Heading>
             </Box>
-            <FlatList
-              data={tasks}
-              renderItem={({ item }) => (
-                <>
+            {mission.tasks.map((task, i) => (
+                <Box key={i}>
                   <Divider bg={'black'} />
                   <Box p={4}>
-                    <Checkbox onChange={() => handleModal(item)} isChecked={item.checked} colorScheme="light">
-                      <Text noOfLines={1} maxWidth={'97%'}>{item.description}</Text>
+                    <Checkbox onChange={() => handleModal(task)} isChecked={task.checked} colorScheme="light">
+                      <Text noOfLines={1} maxWidth={'97%'}>{task.title}</Text>
                     </Checkbox>
                   </Box>
-                </>
-              )}
-            />
+                </Box>
+              ))}
             <Center>
               <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
                 <Modal.Content maxWidth="350" style={[styles.brutalShadow, { borderRadius: 0 }]}>
@@ -70,17 +71,23 @@ const TaskScreen = () => {
                   <Modal.Body>
                     <VStack space={3}>
                       <HStack alignItems="center" justifyContent="space-between">
-                        <Text fontWeight="medium" fontSize={'md'}>{taskDescription}</Text>
+                        <Text fontWeight="medium" fontSize={'md'}>{task.description}</Text>
                       </HStack>
                     </VStack>
                   </Modal.Body>
                   <Modal.Footer>
                     <HStack space={1}>
+                      <Button colorScheme={'light'} style={styles.brutalButton} onPress={() => {
+                        setShowModal(false);
+                      }}>
+                        Marcar como lido
+                      </Button>
                       <Button bg={'red.400'} _pressed={{bg: "black"}} style={styles.brutalButton} onPress={() => {
                         setShowModal(false);
                       }}>
                         Ir para postagem
                       </Button>
+      
                     </HStack>
                   </Modal.Footer>
                 </Modal.Content>

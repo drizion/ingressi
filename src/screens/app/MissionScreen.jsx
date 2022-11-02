@@ -36,6 +36,20 @@ const MissionScreen = () => {
   useEffect(() => {
     setLoading(false)
   }, [navigation])
+  const levels = [{
+    number: 1,
+    text: "O inicio",
+    color: "red"
+  },{
+    number: 2,
+    text: "O teste",
+    color: "yellow"
+  },{
+    number: 3,
+    text: "Outro",
+    color: "green"
+  }]
+  const [currentLevel, setCL] = useState(1)
   return (
     <Box flex={1} safeAreaTop>
       <ScrollView>
@@ -49,11 +63,9 @@ const MissionScreen = () => {
           <Skeleton h={20} ml={5} w={500} startColor={'gray.400'} rounded="md" mb={2} isLoaded={!loading} endColor={'gray.200'}>
             <HStack space={3}>
               <Box ml={2} />
-                <LevelItem color="red" number={1} text={"O início"} />
-                <LevelItem color="orange" number={2} text={"Descubra"} isLocked />
-                <LevelItem color="yellow" number={3} text={"Comece"} isLocked />
-                <LevelItem color="blue" number={4} text={"Entenda"} isLocked />
-                <LevelItem color="green" number={2} text={"Conheça"} isLocked />
+                {levels.map((level, i) => {
+                  return <LevelItem color={level.color} key={i} number={level.number} text={level.text} isLocked={currentLevel<=i ? true : false} />
+                })}
               <Box mr={2} />
             </HStack>
           </Skeleton>

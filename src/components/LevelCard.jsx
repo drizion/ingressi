@@ -43,8 +43,8 @@ const LevelCard = (props) => {
       </HStack>
       <VStack mt={4}>
         <HStack justifyContent="space-between">
-          <Text>{props.currentLevel} de {props.max} tarefas completas.</Text>
-          <Text>{props.percent}%</Text>
+          <Text>{props.completed} de {props.length} tarefas completas.</Text>
+          <Text>{Math.round((props.completed * 100)/props.length)}%</Text>
         </HStack>
         <Progress
           borderColor="#000"
@@ -52,7 +52,7 @@ const LevelCard = (props) => {
           bg="coolGray.100"
           // size="2xl"
           height={6}
-          value={props.percent}
+          value={(props.completed * 100)/props.length}
           borderWidth={2}
           _filledTrack={{
             bg: 'lime.500',

@@ -12,11 +12,16 @@ const LinksComponent = (props) => {
         <Divider my={3} />
         <Heading mb={2}>Links:</Heading>
         <Stack space={2}>
+
+
           {props.links.map((link, i) => {
             return (
               <Link key={i} _isExternal _text={{ fontSize: 'md' }} href={link.url}>{link.text}</Link>
             )
           })}
+
+
+          
         </Stack>
       </Box>
     )
@@ -33,16 +38,16 @@ const Post = (props) => {
 
   return (
     <Box safeAreaTop>
-      <ScrollView px={5}>
+      <ScrollView px={5} h={'100%'}>
         <Header picture={user.picture} />
         <HStack my={2} >
           <Badge colorScheme={badgeColor} style={styles.badge}>{badge}</Badge>
         </HStack>
         <Heading mb={3}>{title}</Heading>
-        <Box w='100%' h={200}>
+        <Box w='100%' h={200} style={styles.image}>
           <Image source={{
             uri: imageUrl
-          }} alt="Alternate Text" size="100%" style={styles.image} />
+          }} alt="Alternate Text" size="100%" style={{borderRadius: 3}} />
         </Box>
 
         <HStack mt={2} justifyContent={'space-between'}>

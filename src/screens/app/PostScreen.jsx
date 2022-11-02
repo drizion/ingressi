@@ -52,6 +52,7 @@ const PostScreen = ({ navigation }) => {
     <Box flex={1} safeAreaTop>
       <VStack>
         <FlatList
+          h={'100%'}
           data={postList}
           ListHeaderComponent={<HeaderList posts={posts} user={user} />}
           renderItem={({ item }) => (

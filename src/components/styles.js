@@ -36,9 +36,9 @@ export const styles = StyleSheet.create({
     },
     image: {
       borderColor: "#000000",
-      borderWidth: 1.5,
-      borderRightWidth: 3,
-      borderBottomWidth: 3,
+      borderWidth: 1.3,
+      borderRightWidth: 2.5,
+      borderBottomWidth: 2.5,
       borderRadius: 5
     },
     badge: {
