@@ -24,13 +24,13 @@ const TaskCheckbox = (props) => {
   return (
     <HStack>
       <Icon as={Ionicons} name={props.checked ? 'checkbox' : 'square-outline'} size={'lg'} color={'black'} mr={2} />
-      <Text fontSize={"md"}>{props.text}</Text>
+      <Text w={"95%"} fontSize={"md"}>{props.text}</Text>
     </HStack>
   )
 }
 
 const MissionScreen = () => {
-  const { user } = useContext(AuthContext)
+  const { user, mission } = useContext(AuthContext)
   const navigation = useNavigation()
   const [loading, setLoading] = useState(true)
   useEffect(() => {
@@ -80,17 +80,18 @@ const MissionScreen = () => {
               <HStack mb={5}>
                 <Icon size={'2xl'} color={"black"} mr={3} mt={2} as={Ionicons} name="home" />
                 <VStack>
-                  <Heading>O início da jornada!</Heading>
-                  <Text>Nível 1 | incompleta</Text>
+                  <Heading>{mission.title}</Heading>
+                  <Text>Nível {currentLevel} | incompleta</Text>
                 </VStack>
               </HStack>
-              <Text numberOfLines={2}>O fim do ensino fundamental é uma etapa muito importante na nossa vida, pois é um momento de escolhas</Text>
+              <Text numberOfLines={2}>{mission.description}</Text>
               <Text color={"red.700"}>Ler mais</Text>
               <Stack space={3} mt={5} mb={2}>
-                <TaskCheckbox text="Leia a página de boas vindas!" checked />
-                <TaskCheckbox text="O que é o IFC?" checked />
-                <TaskCheckbox text="A cultura e diversidade" />
-                <TaskCheckbox text="Conheça a estrutura do campus Sombrio" />
+
+              {mission.tasks.map((task, i) => (
+                <TaskCheckbox text={task.title} checked={task.checked} key={i} />
+              ))}
+
               </Stack>
             </Pressable>
           </Skeleton>

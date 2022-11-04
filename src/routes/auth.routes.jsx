@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { LogBox } from 'react-native';
 import WelcomeScreen from '../screens/auth/WelcomeScreen'
 import LoginScreen from '../screens/auth/LoginScreen'
 import RegisterScreen from '../screens/auth/RegisterScreen'
@@ -10,6 +11,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 const AuthStack = createNativeStackNavigator()
 
 const AuthRoutes = () => {
+    useEffect(() => {
+        LogBox.ignoreLogs(['Setting a timer for a long period of time']);
+    }, [])
     return (
         <AuthStack.Navigator initialRouteName="Welcome">
             <AuthStack.Screen
@@ -18,7 +22,7 @@ const AuthRoutes = () => {
             options={{ headerShown: false }}
             />           
             <AuthStack.Screen
-            name="check"
+            name="Check"
             component={CheckLogin}
             options={{ title: "Entrando..." }}
             />

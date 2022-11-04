@@ -4,7 +4,8 @@ import AuthRoutes from './auth.routes';
 import AuthContext from '../contexts/auth'
 
 const Routes = () => {
-    const { signed } = useContext(AuthContext)
+    const { signed, loading } = useContext(AuthContext)
+    if(loading) return null;
     return (
         signed ? <AppRoutes /> : <AuthRoutes />
     )

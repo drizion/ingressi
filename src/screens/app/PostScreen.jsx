@@ -71,7 +71,8 @@ const PostScreen = ({ navigation }) => {
             </Box>
           )}
           keyExtractor={item => item.id}
-          onEndThreshold={0} />
+          onEndThreshold={0} 
+          />
       </VStack>
     </Box>
   )

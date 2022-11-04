@@ -6,22 +6,8 @@ import AuthContext from '../../contexts/auth';
 import Header from '../../components/Header';
 import { styles } from '../../components/styles';
 
-const tasks = [{
-  id: 1,
-  description: "Leia o post com o título “Iniciando a Jornada” para descobrir mais sobre o IFC.",
-  checked: false
-}, {
-  id: 2,
-  description: "Conheça a estrutura do campus lendo o post “Estrutura do Campus” que preparamos pra você :D",
-  checked: false
-}, {
-  id: 3,
-  description: "Conheça os cursos disponíveis e seus devidos objetivos",
-  checked: false
-}]
-
 const TaskScreen = ({navigation}) => {
-  const { user, mission, levels } = useContext(AuthContext)
+  const { user, mission, levels, setMission } = useContext(AuthContext)
   const [showModal, setShowModal] = useState(false)
   const [task, setTask] = useState({})
   function handleModal(taskObj){
@@ -56,11 +42,11 @@ const TaskScreen = ({navigation}) => {
             {mission.tasks.map((task, i) => (
                 <Box key={i}>
                   <Divider bg={'black'} />
-                  <Box p={4}>
+                  <Stack m={4}>
                     <Checkbox onChange={() => handleModal(task)} isChecked={task.checked} colorScheme="light">
-                      <Text noOfLines={1} maxWidth={'97%'}>{task.title}</Text>
+                      {task.title}
                     </Checkbox>
-                  </Box>
+                  </Stack>
                 </Box>
               ))}
             <Center>
@@ -79,8 +65,16 @@ const TaskScreen = ({navigation}) => {
                     <HStack space={1}>
                       <Button colorScheme={'light'} style={styles.brutalButton} onPress={() => {
                         setShowModal(false);
+                        let newMissionTasks = mission.tasks.map(t=>{
+                          if(t.taskId == task.taskId) t.checked = !t.checked
+                          return t
+                        }) 
+                        let newMission = mission;
+                        newMission.tasks = newMissionTasks;
+                        setMission(newMission);
+                        
                       }}>
-                        Marcar como lido
+                         {task.checked ? 'Marcar como não lido' : 'Marcar como lido'}
                       </Button>
                       <Button bg={'red.400'} _pressed={{bg: "black"}} style={styles.brutalButton} onPress={() => {
                         setShowModal(false);

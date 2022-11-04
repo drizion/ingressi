@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { LogBox } from 'react-native';
 import { Box } from 'native-base';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -44,6 +45,10 @@ const BottomTabs = () => {
 }
 
 const AppRoutes = () => {
+    useEffect(() => {
+        LogBox.ignoreLogs(['Setting a timer for a long period of time']);
+    }, [])
+    
     return (
         <Stack.Navigator initialRouteName="Tabs">
             <Stack.Screen

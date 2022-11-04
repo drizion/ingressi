@@ -1,13 +1,37 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = createContext({})
 
 export const AuthProvider = (props) => {
-  const [user, setUser] = useState({
-    name: "Gabriel",
-    picture: "https://m.cricbuzz.com/a/img/v1/192x192/i1/c182026/tanaka-chivanga.jpg"
-  })
-  const [signed, setSigned] = useState(!!user)
+  const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null)
+  const [loading, setLoading] = useState(true)
+  
+  useEffect(()=>{
+    async function loadStorageData() {
+      const [storagedUser, storagedToken] = await AsyncStorage.multiGet(['@Ingressi:user', '@Ingressi:token'])
+      if(storagedUser[1] && storagedToken[1]){
+        setUser(JSON.parse(storagedUser[1]))
+        setToken(storagedToken[1]);
+      }
+      setLoading(false);
+    }
+    loadStorageData();
+  },[])
+
+  async function signIn(data) {
+    const {token, ...user} = data.result;
+    setUser(user);
+    setToken(token)
+    try{
+      await AsyncStorage.setItem('@Ingressi:user', JSON.stringify(user))
+      await AsyncStorage.setItem('@Ingressi:token', token)
+    }catch(e){
+      console.log(e);
+    }
+  }
+
   const [tasks, setTasks] = useState([{
     id: 123,
     level: 1,
@@ -26,6 +50,7 @@ export const AuthProvider = (props) => {
     badge: "Dicas",
     author: 'Andréia Bez',
     badgeColor: "green",
+    isMission: false,
     imageUrl: "https://picsum.photos/200/203",
     createdAt: "28/09/2022",
     links: [{
@@ -48,6 +73,19 @@ export const AuthProvider = (props) => {
     author: 'Gabriel',
     badgeColor: "purple",
     imageUrl: "https://picsum.photos/202/210",
+    createdAt: "28/09/2022"
+  },
+  {
+    id: 70,
+    title: "Veja as provas anteriores",
+    featured: false,
+    isMission: true,
+    description: "Para ingressar em um campus do IFC, é necessário realizar uma prova de classificação. Você pode consultar as provas dos anos anteriores para estudar! Acesse o link de provas anteriores no fim dessa página, onde você será redirecionado para o site oficial do IFC.",
+    links: [{text: "Acesse as provas anteriores aqui!", url: "https://ingresso.ifc.edu.br/2022/09/19/provas-e-gabaritos-exame-de-classificacao/"}],
+    badge: "Missão",
+    author: 'INGRESSI',
+    badgeColor: "purple",
+    imageUrl: "https://rodrigorenno.com/wp-content/uploads/2018/02/01efb-student2band2bexamination2bjokesx-600x356.jpg",
     createdAt: "28/09/2022"
   }])
   const [campusPosts, setCampusPosts] = useState([{
@@ -134,7 +172,7 @@ export const AuthProvider = (props) => {
       "color": "green"
     }])
   return (
-    <AuthContext.Provider value={{ signed, setSigned, user, levels, setUser, tasks, mission, posts, campusPosts }}>{props.children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ signIn, signed: !!user, user, levels, setUser, tasks, mission, setMission, posts, campusPosts, loading }}>{props.children}</AuthContext.Provider>
   )
 }
 

@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import api from '../../api'
 
-const useLogin = (params = {}, options) => {
-    return useQuery(['user'], () => 
-        api.post('/auth/authenticate', params)
+const usePosts = (params = {}, options) => {
+    return useQuery(['posts'], () => 
+        api.get('/app/getposts', params)
         .then(response => response.data)
         .catch(err => err.message)
     , options)
 }
 
-export default useLogin
+export default usePosts
