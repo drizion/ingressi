@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import getLevel from '../services/global/app/tasks/getLevel';
 
 const AuthContext = createContext({})
 
@@ -7,7 +8,37 @@ export const AuthProvider = (props) => {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
-  
+  const [level, setLevel] = useState({})
+  const [mission, setMission] = useState({
+    "level": 1,
+    "title": "O início da jornada!",
+    "description": "O fim do ensino fundamental é uma etapa muito importante na nossa vida, pois é um momento de escolhas... Portanto é necessário evitar que a vida se torne complexa devido a falta de acessibilidade das edições anteriores. Boa sorte!",
+    "tasks": [{
+      "taskId": 1,
+      "title": "Leia a página de boas vindas",
+      "description": "leia o post com titulo 'iniciando a jornada', para descobrir mais sobre o IFC",
+      "checked": false
+    }, {
+      "taskId": 2,
+      "title": "Como funciona os cursos técnicos integrados ao ensino médio?",
+      "description": "leia o post com titulo 'tecnico integrado', para descobrir mais sobre o IFC",
+      "checked": false
+    }, {
+      "taskId": 3,
+      "title": "Conheça os cursos disponíveis no campus",
+      "description": "leia o post com titulo 'cursos disponiveis', para descobrir mais sobre o IFC",
+      "checked": false
+    }]
+  })
+  const [completedLength, setCompletedLength] = useState(0)
+  // mission.tasks.filter(task => task.checked).length
+
+
+  function updateTasks(newMission) {
+    setMission(newMission)
+    setCompletedLength(newMission.tasks.filter(task => task.checked).length)
+  }
+
   useEffect(()=>{
     async function loadStorageData() {
       const [storagedUser, storagedToken] = await AsyncStorage.multiGet(['@Ingressi:user', '@Ingressi:token'])
@@ -29,6 +60,15 @@ export const AuthProvider = (props) => {
       await AsyncStorage.setItem('@Ingressi:token', token)
     }catch(e){
       console.log(e);
+    }
+  }
+  async function signOut() {
+    setUser(null)
+    setToken(null)
+    try {
+      await AsyncStorage.clear()
+    } catch (e) {
+      console.log(e)  
     }
   }
 
@@ -137,27 +177,7 @@ export const AuthProvider = (props) => {
     checked: false,
     duration: "50 min"
   }])
-  const [mission, setMission] = useState({
-    "level": 1,
-    "title": "O início da jornada!",
-    "description": "O fim do ensino fundamental é uma etapa muito importante na nossa vida, pois é um momento de escolhas... Portanto é necessário evitar que a vida se torne complexa devido a falta de acessibilidade das edições anteriores. Boa sorte!",
-    "tasks": [{
-      "taskId": 1,
-      "title": "Leia a página de boas vindas",
-      "description": "leia o post com titulo 'iniciando a jornada', para descobrir mais sobre o IFC",
-      "checked": true
-    }, {
-      "taskId": 2,
-      "title": "Como funciona os cursos técnicos integrados ao ensino médio?",
-      "description": "leia o post com titulo 'tecnico integrado', para descobrir mais sobre o IFC",
-      "checked": false
-    }, {
-      "taskId": 3,
-      "title": "Conheça os cursos disponíveis no campus",
-      "description": "leia o post com titulo 'cursos disponiveis', para descobrir mais sobre o IFC",
-      "checked": false
-    }]
-  })
+
   const [levels, setLevels] = useState([{
       "number": 1,
       "text": "O inicio",
@@ -172,7 +192,7 @@ export const AuthProvider = (props) => {
       "color": "green"
     }])
   return (
-    <AuthContext.Provider value={{ signIn, signed: !!user, user, levels, setUser, tasks, mission, setMission, posts, campusPosts, loading }}>{props.children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ signIn, signOut, signed: !!user, user, levels, setUser, tasks, mission, setMission, posts, campusPosts, completedLength, updateTasks, loading, level, setLevel, token }}>{props.children}</AuthContext.Provider>
   )
 }
 

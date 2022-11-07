@@ -1,31 +1,25 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { HStack, Center, Heading, Box, Divider, Text, Button, Spacer, ScrollView } from 'native-base';
+import { HStack, Center, Heading, Box, Button, Text } from 'native-base';
 import AuthContext from '../../contexts/auth';
 import Header from '../../components/Header';
-import useLogin from '../../services/global/user/login/index';
+import { useQuery } from '@tanstack/react-query';
+import getLevel from '../../services/global/app/tasks/getLevel';
 
 const NotificationScreen = () => {
-  const { user } = useContext(AuthContext)
-  const {isLoading, data, refetch} = useLogin({email: "admin@admin.com", password: "12345678"})
-  if(!isLoading) {
+  const { user, level, token } = useContext(AuthContext)
+  const [test, setTest] = useState()
 
-    console.log(data)
-  } 
- 
+  const MissionQuery = useQuery(['mission', user.id], getLevel(user.id, token, 1))
   return (
     <Box mx={5} flex={1} safeAreaTop>
-      {/* <ScrollView> */}
       <Header removeBack picture={user.picture} />
       <Center flex={1} justifyContent="center">
         <Heading size="sm">
           Não há notificações pendentes :D
         </Heading>
-        <Heading>
-            {isLoading ? "loading..." : data.result.token}
-        </Heading>
-        <Button onPress={() => refetch()}>refetch</Button>
+        {/* <Text>{MissionQuery.isError}</Text>
+        <Button>Fetch level 1</Button> */}
       </Center>
-      {/* </ScrollView> */}
     </Box>
   )
 }

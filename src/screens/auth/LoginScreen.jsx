@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { HStack, ScrollView, FormControl, Input, Heading, Box, StatusBar, Divider, Text, Button, Spacer, useToast } from 'native-base';
+import { HStack, ScrollView, FormControl, Input, Heading, Box, StatusBar, Divider, Text, Button, Spacer, useToast, Toast, Center } from 'native-base';
 import { isEmail } from '../../handlers/handleRegister'; 
 import { styles } from '../../components/styles';
 import { BackHandler, ActivityIndicator } from 'react-native';
@@ -40,7 +40,7 @@ const LoginScreen = ({navigation}) => {
       signIn(data)
     },
     onError: (error, variables, context) => {
-      console.log(error)
+      Toast.show({description: "Senha incorreta ou usuário não encontrado"})
     }
   })
   useEffect(() => {
@@ -55,11 +55,8 @@ const LoginScreen = ({navigation}) => {
     setCredentials({...credentials, ...value})
   }
   const handleSubmit = async () => {
-    console.log(credentials)
+    if(!isValidEmail || credentials.email=="") return Toast.show({description: 'Insira um email válido'})
     loginMutation.mutate(credentials)
-    
-    // setSigned(true)
-    // navigation.navigate('Check', {credentials})
   }
   return (
     <ScrollView px={5} pt={5} flex={1} safeArea>
@@ -75,13 +72,12 @@ const LoginScreen = ({navigation}) => {
         <FormControl.ErrorMessage>Senha incorreta</FormControl.ErrorMessage>
       </FormControl>
       <Text mb={5}>Esqueceu a senha?</Text>
-      <Button colorScheme={'emerald'} style={styles.brutalButton} onPress={() => handleSubmit()} size={'lg'} mb={2}>Entrar</Button>
-      <Button colorScheme={'emerald'} onPress={() => navigation.navigate('Register')} size={'lg'} variant={"link"} marginBottom={2}>Não tem uma conta? Clique aqui.</Button>
-      <Center p="20">
+      <Button isDisabled={loginMutation.isLoading ? true : false} _disabled={{bg: '#1a1a1a'}} colorScheme={'emerald'} style={styles.brutalButton} onPress={() => handleSubmit()} size={'lg'} mb={2}>
       {
-      loginMutation.isLoading ? <ActivityIndicator /> : <></>
+      loginMutation.isLoading ? <HStack><Text fontSize={'md'} mr={2} color={'black'}>Entrando</Text><ActivityIndicator color={'black'} /></HStack> : 'Entrar'
       }
-      </Center>
+      </Button>
+      <Button colorScheme={'emerald'} onPress={() => navigation.navigate('Register')} size={'lg'} variant={"link"} marginBottom={2}>Não tem uma conta? Clique aqui.</Button>
       
     </ScrollView>
   )

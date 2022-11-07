@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { HStack, ScrollView, Center, FormControl, Input, Radio, Stack, Heading, Box, StatusBar, Divider, Text, Button, Spacer, useToast } from 'native-base';
+import { HStack, ScrollView, Center, FormControl, Input, Radio, Stack, Heading, Box, StatusBar, Divider, Text, Button, Spacer, useToast, Toast } from 'native-base';
 import { isEmail } from '../../handlers/handleRegister'; 
 import { styles } from '../../components/styles';
 import { BackHandler } from 'react-native';
 
 const RegisterScreen = ({ navigation }) => {
-  const toast = useToast()
   const [userType, setUserType] = useState({userType: 'ingressante'})
   const [checkPassword, setCheckPassword] = useState(false)
   const [isValidPassword, setIsValidPassword] = useState(true)
@@ -47,12 +46,13 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     try {
-      if(!isEmail(credentials.email)) throw new Error('Você não inseriu um email válido')
+      if(!isEmail(credentials.email) || credentials.email=='') throw new Error('Você não inseriu um email válido')
       if(credentials.password.length < 8) throw new Error('A senha precisa no mínimo 8 dígitos')
       if(credentials.rePassword == '' || checkPassword) throw new Error('Você não repetiu a senha corretamente')
+      navigation.navigate('PostRegister', {credentials})
       //fazer login com api
     } catch (e) {
-      console.log(e)
+      Toast.show({description: e.message})
     }
 }
   return (
@@ -78,12 +78,12 @@ const RegisterScreen = ({ navigation }) => {
           <Radio colorScheme={'emerald'} value="ingressante" mb={2} size={'sm'}>
             Eu quero conhecer/estudar no IFC-CAS.
           </Radio>
-          <Radio colorScheme={'emerald'} value="aluno" size={'sm'}>
+          <Radio isDisabled colorScheme={'emerald'} value="aluno" size={'sm'}>
             Eu já estudo no IFC-CAS.
           </Radio>
         </Radio.Group>
       </FormControl>
-      <Button colorScheme={'emerald'} style={styles.brutalButton} onPress={() => navigation.navigate('PostRegister', { credentials: { username: ''} })} size={'lg'} mb={2}>Continuar inscrição</Button>
+      <Button colorScheme={'emerald'} style={styles.brutalButton} onPress={() => handleSubmit()} size={'lg'} mb={2}>Continuar inscrição</Button>
       <Button colorScheme={'emerald'} onPress={() => navigation.navigate('Login')} size={'lg'} variant={"link"} mb={5}>Já tem uma conta? Clique aqui.</Button>
     </ScrollView>
   )

@@ -8,21 +8,21 @@ import { styles } from '../../components/styles';
 
 const ProfileScreen = ({}) => {
   const navigation = useNavigation()
-  const { signed, user, posts, tasks, setSigned } = useContext(AuthContext)
+  const { user, mission, levels, signOut } = useContext(AuthContext)
 
   return (
     <Box px={5} py={10} flex={1} safeAreaTop>
         <Center>
           <ProfilePicture size={100} url={user.picture}/>
-          <Heading mb={2} mt={5} size={'sm'}>Nome Completo da Pessoa</Heading>
-          <Heading mb={5} size={'sm'} fontSize={'sm'} fontWeight="300">Ingressante | {user.percent}% concluído</Heading>
+          <Heading mb={2} mt={5} size={'sm'}>{user.name}</Heading>
+          <Heading mb={5} size={'sm'} fontSize={'sm'} fontWeight="300">Ingressante | {Math.round((mission.level*100)/levels.length)}% concluído</Heading>
         </Center>
           <Spacer />
           <Stack space={2}>
             <Button style={styles.brutalButton} size={'lg'}>Alterar a foto de perfil</Button>
             <Button style={styles.brutalButton} size={'lg'}>Segurança e Privacidade</Button>
             <Button style={styles.brutalButton} size={'lg'}>Relatar um problema</Button>
-            <Button style={styles.brutalButton} size={'lg'} onPress={() => setSigned(false)}>Sair da conta</Button>
+            <Button style={styles.brutalButton} size={'lg'} onPress={() => signOut()}>Sair da conta</Button>
           </Stack>
     </Box>
   )

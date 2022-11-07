@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react'
-import { VStack, Button, HStack, View, Heading, FlatList, Stack, Divider, ScrollView, Box, Text, Checkbox, Center, Modal } from 'native-base';
+import { VStack, Button, HStack, View, Heading, FlatList, Stack, Divider, ScrollView, Box, Text, Checkbox, Center, Modal, Icon } from 'native-base';
 import { StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../../contexts/auth';
 import Header from '../../components/Header';
 import { styles } from '../../components/styles';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const TaskScreen = ({navigation}) => {
-  const { user, mission, levels, setMission } = useContext(AuthContext)
+  const { user, mission, levels, updateTasks, completedLength } = useContext(AuthContext)
   const [showModal, setShowModal] = useState(false)
   const [task, setTask] = useState({})
   function handleModal(taskObj){
@@ -71,7 +72,7 @@ const TaskScreen = ({navigation}) => {
                         }) 
                         let newMission = mission;
                         newMission.tasks = newMissionTasks;
-                        setMission(newMission);
+                        updateTasks(newMission);
                         
                       }}>
                          {task.checked ? 'Marcar como não lido' : 'Marcar como lido'}
@@ -88,6 +89,11 @@ const TaskScreen = ({navigation}) => {
               </Modal>
             </Center>
           </Box>
+          {
+            (completedLength * 100)/mission.tasks.length == 100 ? 
+              <Button mb={4} bg={'black'} _text={{color: 'white', fontSize: 'lg', fontWeight: 'bold'}} _pressed={{bg: 'gray.600'}} style={styles.brutalButton}>Próximo Nível!</Button>
+            : null
+          }
         </Box>
       </View>
     </Box>
