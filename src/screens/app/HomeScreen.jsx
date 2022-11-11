@@ -1,7 +1,7 @@
 // imports
 import React, { useEffect, useState, useContext } from 'react';
 import { HStack, VStack, Center, Heading, Box, StatusBar, Divider, ScrollView, useToast, Text, Skeleton } from 'native-base';
-import { Platform } from 'react-native';
+import { Platform, RefreshControl } from 'react-native';
 
 // components
 import { HomeWelcome } from '../../components/home/HomeWelcome';
@@ -12,14 +12,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../../contexts/auth';
 import { LevelBar } from '../../components/LevelBar';
 import { styles } from '../../components/styles';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function HomeScreen({navigation}) {
-  const { user, mission, levels, completedLength } = useContext(AuthContext)
+export default function HomeScreen({ navigation }) {
+  const { user, mission, token, tasks, completedTasks, refreshData } = useContext(AuthContext)
+  useEffect(() => {
+    refreshData()
+  }, [])
   return (
-    <Box flex={1} safeAreaTop>
+    <SafeAreaView style={{flex: 1}}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
-      <ScrollView px={5} paddingTop={1}>
+      <ScrollView px={5} paddingTop={1} refreshControl={<RefreshControl
+        refreshing={false}
+        onRefresh={refreshData}
+      />}>
         <Center>
           <HStack
             justifyContent="space-between"
@@ -27,20 +34,21 @@ export default function HomeScreen({navigation}) {
             w="100%"
           >
             <ProfilePicture onPress={() => navigation.navigate('Profile')} url={user?.picture} />
-            <LevelBar progress={(mission?.level*100)/levels?.length} level={mission?.level}/>
+
+            <LevelBar progress={50} level={mission?.number} />
           </HStack>
           <HomeWelcome welcome="Olá novamente" name={user?.name?.split(' ')[0]} loaded />
           <Divider mb={8} thickness={2} bg={'#101118'} />
-  
-            <LevelCard 
-              currentLevel={mission?.level}
-              completed={mission?.tasks?.filter(task => task.checked).length}
-              length={mission?.tasks?.length}
-              title={mission?.title}
-              isLoaded={true}
-              onPress={() => navigation.navigate('Task')}
-              />
-  
+
+          <LevelCard
+            currentLevel={mission?.number}
+            completed={completedTasks?.length}
+            length={tasks?.length}
+            title={mission?.title}
+            isLoaded={true}
+            onPress={() => navigation.navigate('Task')}
+          />
+
           <HStack w="100%" mt={4} justifyContent="space-between">
             <HomeCard
               iconName="school"
@@ -65,17 +73,17 @@ export default function HomeScreen({navigation}) {
             text="Hospedagem"
             cardBorderColor="#0A4459"
             cardBgColor="#3E95B5"
-            onPress={() => navigation.navigate('Course', {name: "Hospedagem", text: "Em breve, informações sobre o curso de Hospedagem\n\n-objetivo do curso\n-grade curricular\n-professores\n-horários\n-etc..."})}
+            onPress={() => navigation.navigate('Course', { name: "Hospedagem", text: "Em breve, informações sobre o curso de Hospedagem\n\n-objetivo do curso\n-grade curricular\n-professores\n-horários\n-etc..." })}
           />
           <HomeCard
             iconName="settings-ethernet"
             text="Informática"
             cardBorderColor="#17473B"
             cardBgColor="#3E9F88"
-            onPress={() => navigation.navigate('Course', {name: "Informática para Internet", text: "Em breve, informações sobre o curso de Informática para Internet\n\n-objetivo do curso\n-grade curricular\n-professores\n-horários\n-etc..."})}
+            onPress={() => navigation.navigate('Course', { name: "Informática para Internet", text: "Em breve, informações sobre o curso de Informática para Internet\n\n-objetivo do curso\n-grade curricular\n-professores\n-horários\n-etc..." })}
           />
         </HStack>
       </ScrollView>
-    </Box>
+    </SafeAreaView>
   );
 }

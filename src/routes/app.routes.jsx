@@ -16,6 +16,7 @@ import CampusScreen from '../screens/app/CampusScreen';
 import PostScreen from '../screens/app/PostScreen';
 import CourseScreen from '../screens/app/CourseScreen';
 import Post from '../screens/app/Post';
+import { SafeAreaInsetsContext, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const tabOptions = {
   headerShown: false,
@@ -24,8 +25,8 @@ const tabOptions = {
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
-
 const BottomTabs = () => {
+    const insets = useSafeAreaInsets()
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
@@ -35,6 +36,7 @@ const BottomTabs = () => {
 					</Box>;
 				}
 			})}
+            safeAreaInsets={insets}
 		>
 			<Tab.Screen name="Home" component={HomeScreen} options={tabOptions} />
 			<Tab.Screen name="Mission" component={MissionScreen} options={tabOptions} />

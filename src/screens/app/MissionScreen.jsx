@@ -30,7 +30,7 @@ const TaskCheckbox = (props) => {
 }
 
 const MissionScreen = () => {
-  const { user, mission } = useContext(AuthContext)
+  const { user, mission, tasks } = useContext(AuthContext)
   const navigation = useNavigation()
   const [loading, setLoading] = useState(true)
   useEffect(() => {
@@ -54,7 +54,7 @@ const MissionScreen = () => {
     <Box flex={1} safeAreaTop>
       <ScrollView>
         <Box mx={5}>
-          <Header removeBack picture={user.picture} />
+          <Header removeBack picture={user?.picture} />
           <Skeleton startColor={'gray.400'} rounded="md" w={"40%"} mb={3} isLoaded={!loading} endColor={'gray.200'}>
             <Heading mb={5}>Níveis</Heading>
           </Skeleton>
@@ -64,7 +64,7 @@ const MissionScreen = () => {
             <HStack space={3}>
               <Box ml={2} />
                 {levels.map((level, i) => {
-                  return <LevelItem color={level.color} key={i} number={level.number} text={level.text} isLocked={currentLevel<=i ? true : false} />
+                  return <LevelItem color={level?.color} key={i} number={level?.number} text={level?.text} isLocked={currentLevel<=i ? true : false} />
                 })}
               <Box mr={2} />
             </HStack>
@@ -80,16 +80,16 @@ const MissionScreen = () => {
               <HStack mb={5}>
                 <Icon size={'2xl'} color={"black"} mr={3} mt={2} as={Ionicons} name="home" />
                 <VStack>
-                  <Heading>{mission.title}</Heading>
+                  <Heading>{mission?.title}</Heading>
                   <Text>Nível {currentLevel} | incompleta</Text>
                 </VStack>
               </HStack>
-              <Text numberOfLines={2}>{mission.description}</Text>
+              <Text numberOfLines={2}>{mission?.description}</Text>
               <Text color={"red.700"}>Ler mais</Text>
               <Stack space={3} mt={5} mb={2}>
 
-              {mission.tasks.map((task, i) => (
-                <TaskCheckbox text={task.title} checked={task.checked} key={i} />
+              {tasks.map((task, i) => (
+                <TaskCheckbox text={task?.title} checked={task?.completed} key={i} />
               ))}
 
               </Stack>

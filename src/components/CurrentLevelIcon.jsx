@@ -5,7 +5,7 @@ import React from 'react';
 const CurrentLevelIcon = (props) => {
   return (
     <Box>
-      <HStack>
+      {/* <HStack>
       <Box borderRadius={1} borderColor="#6D7A6F">
         <Heading> {props.currentLevel} </Heading>
       </Box>
@@ -20,7 +20,7 @@ const CurrentLevelIcon = (props) => {
           <Text>50%</Text>
         </HStack>
         <Progress w="100%"/>
-      </VStack>
+      </VStack> */}
     </Box>
   );
 };

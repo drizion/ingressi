@@ -4,12 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Routes from './src/routes';
 import { AuthProvider } from './src/contexts/auth';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const queryClient = new QueryClient()
 
 const App = () => {
-  
   return (
+    <SafeAreaProvider>
     <NativeBaseProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
@@ -19,6 +20,7 @@ const App = () => {
         </AuthProvider>
       </QueryClientProvider>
     </NativeBaseProvider>
+    </SafeAreaProvider>
   )
 }
 

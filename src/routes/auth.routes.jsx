@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { LogBox } from 'react-native';
 import WelcomeScreen from '../screens/auth/WelcomeScreen'
 import LoginScreen from '../screens/auth/LoginScreen'
@@ -7,6 +7,7 @@ import PostRegisterScreen from '../screens/auth/PostRegisterScreen'
 import CheckLogin from '../screens/auth/CheckLogin'
 import AppRoutes from './app.routes'
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import AuthContext from '../contexts/auth';
 
 const AuthStack = createNativeStackNavigator()
 

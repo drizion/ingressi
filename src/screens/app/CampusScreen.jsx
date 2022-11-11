@@ -4,6 +4,7 @@ import Header from '../../components/Header';
 import AuthContext from '../../contexts/auth';
 import { styles } from '../../components/styles';
 import TaskCard from '../../components/TaskCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const CampusScreen = (props) => {
@@ -22,7 +23,7 @@ const CampusScreen = (props) => {
   }, [filter])
   
   return (
-    <Box flex={1} safeAreaTop>
+    <SafeAreaView style={{flex: 1}}>
       <ScrollView px={5}>
         <Header picture={user.picture} />
         <Skeleton startColor={'gray.400'} rounded="md" w={"40%"} mb={3} isLoaded={!loading} endColor={'gray.200'}>
@@ -114,7 +115,7 @@ const CampusScreen = (props) => {
             /> */}
         </Stack>
       </ScrollView>
-    </Box>
+    </SafeAreaView>
 
   )
 }

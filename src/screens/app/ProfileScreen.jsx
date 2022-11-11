@@ -13,9 +13,9 @@ const ProfileScreen = ({}) => {
   return (
     <Box px={5} py={10} flex={1} safeAreaTop>
         <Center>
-          <ProfilePicture size={100} url={user.picture}/>
-          <Heading mb={2} mt={5} size={'sm'}>{user.name}</Heading>
-          <Heading mb={5} size={'sm'} fontSize={'sm'} fontWeight="300">Ingressante | {Math.round((mission.level*100)/levels.length)}% concluído</Heading>
+          <ProfilePicture size={100} url={user?.picture}/>
+          <Heading mb={2} mt={5} size={'sm'}>{user?.name}</Heading>
+          <Heading mb={5} size={'sm'} fontSize={'sm'} fontWeight="300">Ingressante | Nível {mission?.number}</Heading>
         </Center>
           <Spacer />
           <Stack space={2}>

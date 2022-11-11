@@ -6,8 +6,8 @@ import { styles } from "./styles";
 
 export const LevelBar = (props) => {
   return <Box>
-    <HStack space={"1px"} justifyContent="center">
-      <Center style={styles.brutalShadow} bg={'black'} px={2} borderRadius={10}>
+    <HStack  justifyContent="center">
+      <Center style={styles.brutalShadow} zIndex={1} bg={'black'} px={2} borderRadius={10} >
         <Icon 
           as={FontAwesome5}
           name={'star-half-alt'}
@@ -15,16 +15,17 @@ export const LevelBar = (props) => {
           color={'#f5e942'}
         />
       </Center>
-      <Center>
+      <Center ml={-2}>
         <Box w="100" maxW="100">
           <Progress style={styles.brutalShadow} bg="coolGray.100" size="2xl" _filledTrack={{
-          bg: "lime.500", borderRightWidth: 3, 
-          }} value={props.progress ? props.progress : 0} borderWidth={1} />
+          bg: "lime.500", borderRightWidth: props.progress == 0 ? 0 : props.progress == 100 ? 0 : 3,
+          borderLeftRadius: 0 
+          }} value={props.progress || 0} borderWidth={1} borderLeftRadius={0} />
         </Box>
       </Center>
     </HStack>
     <HStack>
-      <Text bold>{"Nível " + (props.level ? props.level : '...')}</Text>
+      <Text bold>{"Nível " + (props.level || '...')}</Text>
     </HStack>
   </Box>;
 };

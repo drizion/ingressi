@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import getLevel from '../services/global/app/tasks/getLevel';
+import api from '../services/global/api';
 
 const AuthContext = createContext({})
 
@@ -8,57 +9,59 @@ export const AuthProvider = (props) => {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [level, setLevel] = useState({})
-  const [mission, setMission] = useState({
-    "level": 1,
-    "title": "O início da jornada!",
-    "description": "O fim do ensino fundamental é uma etapa muito importante na nossa vida, pois é um momento de escolhas... Portanto é necessário evitar que a vida se torne complexa devido a falta de acessibilidade das edições anteriores. Boa sorte!",
-    "tasks": [{
-      "taskId": 1,
-      "title": "Leia a página de boas vindas",
-      "description": "leia o post com titulo 'iniciando a jornada', para descobrir mais sobre o IFC",
-      "checked": false
-    }, {
-      "taskId": 2,
-      "title": "Como funciona os cursos técnicos integrados ao ensino médio?",
-      "description": "leia o post com titulo 'tecnico integrado', para descobrir mais sobre o IFC",
-      "checked": false
-    }, {
-      "taskId": 3,
-      "title": "Conheça os cursos disponíveis no campus",
-      "description": "leia o post com titulo 'cursos disponiveis', para descobrir mais sobre o IFC",
-      "checked": false
-    }]
-  })
-  const [completedLength, setCompletedLength] = useState(0)
-  // mission.tasks.filter(task => task.checked).length
+  const [mission, setMission] = useState()
+  const [tasks, setTasks] = useState()
+  const [completedTasks, setCompletedTasks] = useState(0)
+  const [refreshing, setRefreshing] = useState(false)
 
-
-  function updateTasks(newMission) {
-    setMission(newMission)
-    setCompletedLength(newMission.tasks.filter(task => task.checked).length)
+  function updateTasks(newTasks) {
+    setTasks(newTasks)
+    setCompletedTasks(newTasks?.filter(task => task.completed).map(task => task.id))
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     async function loadStorageData() {
-      const [storagedUser, storagedToken] = await AsyncStorage.multiGet(['@Ingressi:user', '@Ingressi:token'])
-      if(storagedUser[1] && storagedToken[1]){
-        setUser(JSON.parse(storagedUser[1]))
-        setToken(storagedToken[1]);
+      try {
+        const [storagedUser, storagedToken] = await AsyncStorage.multiGet(['@Ingressi:user', '@Ingressi:token'])
+        if (storagedUser[1] && storagedToken[1]) {
+          setUser(JSON.parse(storagedUser[1]))
+          setToken(storagedToken[1]);
+          getUserLevel(JSON.parse(storagedUser[1])?.id, storagedToken[1])
+        }
+        setLoading(false);
+      } catch (e) {
+        console.log(e)
       }
-      setLoading(false);
     }
-    loadStorageData();
-  },[])
+    try {
+      loadStorageData();
+    } catch (e) {
+      console.log('ocorreu um erro, fazendo logout');
+      signOut()
+    }
+  }, [])
+
+  async function getUserLevel(id, token, level) {
+    const userLevel = await getLevel(id, token, level)
+    setMission(userLevel?.mission)
+    setTasks(userLevel?.tasks)
+    setCompletedTasks(userLevel?.tasks?.filter(task => task.completed).map(task => task.id))
+  }
+
+  async function refreshData() {
+      await getUserLevel(user.id, token)
+  }
 
   async function signIn(data) {
-    const {token, ...user} = data.result;
+    const { token, ...user } = data.result;
     setUser(user);
     setToken(token)
-    try{
+    try {
       await AsyncStorage.setItem('@Ingressi:user', JSON.stringify(user))
       await AsyncStorage.setItem('@Ingressi:token', token)
-    }catch(e){
+      await getUserLevel(user?.id, token)
+      console.log('login realizado com sucesso');
+    } catch (e) {
       console.log(e);
     }
   }
@@ -67,22 +70,14 @@ export const AuthProvider = (props) => {
     setToken(null)
     try {
       await AsyncStorage.clear()
+      setLoading(false)
+      console.log('logout realizado com sucesso');
     } catch (e) {
-      console.log(e)  
+      console.log(e)
     }
   }
 
-  const [tasks, setTasks] = useState([{
-    id: 123,
-    level: 1,
-    index: 0,
-    title: "titulo da missão (state)",
-    content: "conteúdo da missão (state)",
-    image: "imagem da missão (state)",
-    links: [{ text: "ir para o edital", link: "https://ingresso.ifc.edu.br" }],
-    createdAt: 12345678,
-    updatedAt: 12345678
-  }])
+
   const [posts, setPosts] = useState([{
     id: 126,
     title: "Diminua sua ansiedade com esse método de estudos",
@@ -121,7 +116,7 @@ export const AuthProvider = (props) => {
     featured: false,
     isMission: true,
     description: "Para ingressar em um campus do IFC, é necessário realizar uma prova de classificação. Você pode consultar as provas dos anos anteriores para estudar! Acesse o link de provas anteriores no fim dessa página, onde você será redirecionado para o site oficial do IFC.",
-    links: [{text: "Acesse as provas anteriores aqui!", url: "https://ingresso.ifc.edu.br/2022/09/19/provas-e-gabaritos-exame-de-classificacao/"}],
+    links: [{ text: "Acesse as provas anteriores aqui!", url: "https://ingresso.ifc.edu.br/2022/09/19/provas-e-gabaritos-exame-de-classificacao/" }],
     badge: "Missão",
     author: 'INGRESSI',
     badgeColor: "purple",
@@ -179,20 +174,37 @@ export const AuthProvider = (props) => {
   }])
 
   const [levels, setLevels] = useState([{
-      "number": 1,
-      "text": "O inicio",
-      "color": "red"
-    },{
-      "number": 2,
-      "text": "O teste",
-      "color": "yellow"
-    },{
-      "number": 3,
-      "text": "Outro",
-      "color": "green"
-    }])
+    "number": 1,
+    "text": "O inicio",
+    "color": "red"
+  }, {
+    "number": 2,
+    "text": "O teste",
+    "color": "yellow"
+  }, {
+    "number": 3,
+    "text": "Outro",
+    "color": "green"
+  }])
   return (
-    <AuthContext.Provider value={{ signIn, signOut, signed: !!user, user, levels, setUser, tasks, mission, setMission, posts, campusPosts, completedLength, updateTasks, loading, level, setLevel, token }}>{props.children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ 
+      signIn, 
+      signOut, 
+      signed: !!user, 
+      user, 
+      levels, 
+      setUser, 
+      tasks, 
+      mission, 
+      setMission, 
+      posts, 
+      campusPosts, 
+      completedTasks, 
+      updateTasks, 
+      loading, 
+      token,
+      refreshData
+    }}>{props.children}</AuthContext.Provider>
   )
 }
 
