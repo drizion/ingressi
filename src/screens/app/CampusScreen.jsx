@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { ScrollView, Heading, Divider, Skeleton, Text, Box, Icon, HStack, Checkbox, Center, Pressable, Stack, Badge, Button } from 'native-base';
+import { ScrollView, Heading, Divider, Skeleton, HStack, Pressable, StatusBar, Stack, Badge, Button } from 'native-base';
 import Header from '../../components/Header';
 import AuthContext from '../../contexts/auth';
 import { styles } from '../../components/styles';
@@ -24,6 +24,7 @@ const CampusScreen = (props) => {
   
   return (
     <SafeAreaView style={{flex: 1}}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
       <ScrollView px={5}>
         <Header picture={user.picture} />
         <Skeleton startColor={'gray.400'} rounded="md" w={"40%"} mb={3} isLoaded={!loading} endColor={'gray.200'}>

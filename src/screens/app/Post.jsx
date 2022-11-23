@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
-import { VStack, Stack, HStack, ScrollView, Box, Heading, Badge, Text, Image, Divider, Icon, Center, Link, Button } from 'native-base';
+import { StatusBar, VStack, Stack, HStack, ScrollView, Box, Heading, Badge, Text, Image, Divider, Icon, Center, Link, Button } from 'native-base';
 import Header from '../../components/Header';
 import AuthContext from '../../contexts/auth';
 import { styles } from '../../components/styles';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useQuery } from '@tanstack/react-query';
+import api from '../../services/global/api';
 
 const MissionPostInteractor = (props) => {
   if (props.isMission) {
@@ -39,23 +41,42 @@ const LinksComponent = (props) => {
 }
 
 const Post = (props) => {
-  const { user, posts } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   const { id } = props.route.params
-  const filteredPost = posts.filter(post => post.id == id)
-  const { title, badge, badgeColor, imageUrl, links, description, author, createdAt, isMission } = filteredPost[0]
-
+  const isMission = !!props.route.params.isMission
+  // const filteredPost = posts.filter(post => post.id == id)
+  // const { title, badge, badgeColor, imageUrl, links, description, author, createdAt, isMission } = filteredPost[0]
+  const fetchPost = async () => {
+    const { data } = await api.get('/app/post?id=' + id)
+    return data.result
+  }
+  const {
+    data,
+    error,
+    isLoading,
+    refetch,
+    isFetching,
+    isFetched,
+    status,
+    isSuccess
+  } = useQuery({
+    queryKey: ['posts', id],
+    queryFn: fetchPost
+  })
+  // console.log(error);
   return (
     <Box safeAreaTop>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
       <ScrollView px={5} h={'100%'}>
         <Header picture={user.picture} />
         <HStack my={2} >
-          <Badge colorScheme={badgeColor} style={styles.badge}>{badge}</Badge>
+          <Badge colorScheme={data?.badgeColor} style={styles.badge}>{data?.badge}</Badge>
         </HStack>
-        <Heading mb={3}>{title}</Heading>
+        <Heading mb={3}>{data?.title}</Heading>
         <Box w='100%' h={200} style={styles.image}>
           <Image source={{
-            uri: imageUrl
-          }} alt="Alternate Text" size="100%" style={{ borderRadius: 3 }} />
+            uri: data?.image
+          }} alt="Imagem do post" size="100%" style={{ borderRadius: 3 }} />
         </Box>
 
         {isMission ? null :
@@ -64,20 +85,20 @@ const Post = (props) => {
               <Center mr={1}>
                 <Icon size="sm" as={Ionicons} name="person" />
               </Center>
-              <Text color={"gray.700"}>{author}</Text>
+              <Text color={"gray.700"}>{data?.author}</Text>
             </HStack>
             <HStack justifyContent={'center'}>
               <Center mr={1}>
                 <Icon size="sm" as={Ionicons} name="calendar" />
               </Center>
-              <Text color={"gray.700"}>{createdAt}</Text>
+              <Text color={"gray.700"}>{new Date(data?.createdAt).toLocaleDateString() || ''}</Text>
             </HStack>
           </HStack>
         }
         <Divider my={3} />
-        <Text lineHeight={'lg'} fontSize={'md'} pb={5}>{description}</Text>
-        <LinksComponent links={links} />
-        <MissionPostInteractor isMission={isMission} />
+        <Text lineHeight={'lg'} fontSize={'md'} pb={5}>{data?.description}</Text>
+        <LinksComponent links={data?.links} />
+        <MissionPostInteractor isMission={false} />
       </ScrollView>
     </Box>
   )

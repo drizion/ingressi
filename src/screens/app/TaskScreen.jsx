@@ -1,17 +1,28 @@
 import React, { useContext, useState } from 'react'
-import { VStack, Button, HStack, View, Heading, FlatList, Stack, Divider, ScrollView, Box, Text, Checkbox, Center, Modal, Icon, Toast } from 'native-base';
-import { StatusBar } from 'react-native';
+import { StatusBar, VStack, Button, HStack, View, Heading, FlatList, Stack, Divider, ScrollView, Box, Text, Checkbox, Center, Modal, Icon, Toast, Spacer } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../../contexts/auth';
 import Header from '../../components/Header';
 import { styles } from '../../components/styles';
+import AsyncButton from '../../components/AsyncButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useMutation } from '@tanstack/react-query';
 import api from '../../services/global/api';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Platform } from 'react-native';
+
+const MyStatusBar = ({insets, backgroundColor, ...props}) => {  
+  return (
+    <View style={[{ backgroundColor, height: Platform.OS == 'ios' ? insets.top : undefined }]}>
+      <SafeAreaView>
+        <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+      </SafeAreaView>  
+    </View>
+  )
+};
 
 const TaskScreen = ({navigation}) => {
-  const { user, mission, tasks, updateTasks, completedTasks, token } = useContext(AuthContext)
+  const { user, mission, tasks, updateTasks, completedTasks, token, nextLevel } = useContext(AuthContext)
   const [showModal, setShowModal] = useState(false)
   const [task, setTask] = useState({})
   const toggleTaskMutation  = useMutation(async ({taskId, level, token}) => {
@@ -28,6 +39,11 @@ const TaskScreen = ({navigation}) => {
       console.log('erro ao atualizar tarefa', error)
     }
   })
+  const nextLevelMutation = useMutation(async () => {
+    await nextLevel()
+    return true
+  })
+  
   function handleModal(taskObj){
     setTask(taskObj)
     setShowModal(true)
@@ -36,10 +52,11 @@ const TaskScreen = ({navigation}) => {
     setShowModal(false)
     navigation.navigate('Posts')
   }
-  return (
-    <SafeAreaView style={{flex: 1}}>
-    <Box flex={1} bg={'red.300'}>
-        <StatusBar translucent backgroundColor={'#fca5a5'} />
+  const insets = useSafeAreaInsets()
+  return ( 
+    <View flex={1}>
+    <MyStatusBar insets={insets} backgroundColor={'#fca5a5'}/>
+      <ScrollView bg={'red.300'} contentContainerStyle={{flexGrow: 1}}>
         <Box px={5} pb={7} bg={'red.300'}>
           <Header picture={user?.picture} />
           <HStack mt={3}>
@@ -96,7 +113,7 @@ const TaskScreen = ({navigation}) => {
                          {task?.completed ? 'Desmarcar tarefa' : 'Marcar como lido'}
                       </Button>
                       <Button bg={'red.400'} _pressed={{bg: "black"}} style={styles.brutalButton} onPress={() => {
-                        setShowModal(false);
+                        navigation.navigate('Task', {taskId: task?.id, completed: task?.completed})
                       }}>
                         Ir para postagem
                       </Button>
@@ -107,14 +124,32 @@ const TaskScreen = ({navigation}) => {
               </Modal>
             </Center>
           </Box>
+
+
           {
-            tasks?.length == completedTasks?.length ? 
-              <Button mb={4} bg={'black'} _text={{color: 'white', fontSize: 'lg', fontWeight: 'bold'}} _pressed={{bg: 'gray.600'}} style={styles.brutalButton}>Próximo Nível!</Button>
+            tasks?.length == completedTasks?.length && mission?.max != mission?.number ? 
+              <AsyncButton 
+                isLoading={nextLevelMutation.isLoading}
+                bg={'black'}
+                _text={{color: 'white', fontSize: 'lg', fontWeight: 'bold'}} 
+                _pressed={{bg: 'gray.600'}} 
+                text={'Próximo Nível!'}
+                textLoading={'abrindo'}
+                onPress={() => nextLevelMutation.mutate()}
+              /> 
+            : null
+          }
+          {
+            tasks?.length == completedTasks?.length && mission?.max == mission?.number ?
+              <Center mt={2} p={4} style={styles.brutalButton}>
+                <Heading mb={2}>Parabéns!</Heading>
+                <Text>Você completou todas as etapas do app!</Text>
+              </Center> 
             : null
           }
         </Box>
-      </Box>
-      </SafeAreaView>
+      </ScrollView>
+      </View>
   )
 }
 

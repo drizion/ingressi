@@ -35,7 +35,7 @@ export default function HomeScreen({ navigation }) {
           >
             <ProfilePicture onPress={() => navigation.navigate('Profile')} url={user?.picture} />
 
-            <LevelBar progress={50} level={mission?.number} />
+            <LevelBar progress={50} level={user?.gamification?.length} />
           </HStack>
           <HomeWelcome welcome="Olá novamente" name={user?.name?.split(' ')[0]} loaded />
           <Divider mb={8} thickness={2} bg={'#101118'} />
@@ -46,7 +46,7 @@ export default function HomeScreen({ navigation }) {
             length={tasks?.length}
             title={mission?.title}
             isLoaded={true}
-            onPress={() => navigation.navigate('Task')}
+            onPress={() => navigation.navigate('Tasks')}
           />
 
           <HStack w="100%" mt={4} justifyContent="space-between">
@@ -67,7 +67,7 @@ export default function HomeScreen({ navigation }) {
           </HStack>
         </Center>
         <Heading mt={4}>Cursos</Heading>
-        <HStack w="100%" mt={2} justifyContent="space-between">
+        <HStack w="100%" mt={2} mb={6} justifyContent="space-between">
           <HomeCard
             iconName="king-bed"
             text="Hospedagem"

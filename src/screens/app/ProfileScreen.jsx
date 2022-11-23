@@ -12,6 +12,7 @@ const ProfileScreen = ({}) => {
 
   return (
     <Box px={5} py={10} flex={1} safeAreaTop>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
         <Center>
           <ProfilePicture size={100} url={user?.picture}/>
           <Heading mb={2} mt={5} size={'sm'}>{user?.name}</Heading>

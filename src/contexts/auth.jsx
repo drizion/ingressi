@@ -2,6 +2,8 @@ import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import getLevel from '../services/global/app/tasks/getLevel';
 import api from '../services/global/api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Toast } from 'native-base';
 
 const AuthContext = createContext({})
 
@@ -12,7 +14,7 @@ export const AuthProvider = (props) => {
   const [mission, setMission] = useState()
   const [tasks, setTasks] = useState()
   const [completedTasks, setCompletedTasks] = useState(0)
-  const [refreshing, setRefreshing] = useState(false)
+  const [maxLevel, setMaxLevel] = useState(1)
 
   function updateTasks(newTasks) {
     setTasks(newTasks)
@@ -26,7 +28,7 @@ export const AuthProvider = (props) => {
         if (storagedUser[1] && storagedToken[1]) {
           setUser(JSON.parse(storagedUser[1]))
           setToken(storagedToken[1]);
-          getUserLevel(JSON.parse(storagedUser[1])?.id, storagedToken[1])
+          getUserLevel(JSON.parse(storagedUser[1])?.id, storagedToken[1], (Math.max(...JSON.parse(storagedUser[1])?.gamification?.map(o => o.level)) || 1))
         }
         setLoading(false);
       } catch (e) {
@@ -41,15 +43,41 @@ export const AuthProvider = (props) => {
     }
   }, [])
 
-  async function getUserLevel(id, token, level) {
-    const userLevel = await getLevel(id, token, level)
-    setMission(userLevel?.mission)
-    setTasks(userLevel?.tasks)
-    setCompletedTasks(userLevel?.tasks?.filter(task => task.completed).map(task => task.id))
+  async function getUserLevel(id, token, level, options = {}) {
+    if(options?.toast) {
+      Toast.show({description: `Carregando nível ${level}. Aguarde!`})
+    }
+    if(options?.congratulations) {
+      Toast.show({description: `Parabéns por passar de nível! Estamos preparando suas tarefas :D`})
+    }
+    try {
+      const userLevel = await getLevel(id, token, level)
+      setMission(userLevel?.mission)
+      setTasks(userLevel?.tasks)
+      setCompletedTasks(userLevel?.tasks?.filter(task => task?.completed).map(task => task.id))
+      
+    } catch (error) {
+      console.log('getUserLevel error', error)
+    }
   }
-
+  const updateMutation  = useMutation(async ({token})=>{
+    const { data } = await api.post('/auth/authenticate', {
+      token
+    })
+    return data;
+  }, {
+    onSuccess : (data)=>{
+      console.log('update com sucesso')
+      signIn(data)
+    },
+    onError: (error, variables, context) => {
+      console.log("ocorreu um erro de autenticação")
+      // Toast.show({description: "Há algum problema em sua conta... Saia e faça login novamente."})
+    }
+  })
   async function refreshData() {
-      await getUserLevel(user.id, token)
+      console.log("Salvando...")
+      updateMutation.mutate({token})
   }
 
   async function signIn(data) {
@@ -59,8 +87,8 @@ export const AuthProvider = (props) => {
     try {
       await AsyncStorage.setItem('@Ingressi:user', JSON.stringify(user))
       await AsyncStorage.setItem('@Ingressi:token', token)
-      await getUserLevel(user?.id, token)
-      console.log('login realizado com sucesso');
+      await getUserLevel(user?.id, token, (Math.max(...user?.gamification?.map(o => o.level)) || 1))
+      console.log('Credenciais armazenadas no dispositivo!');
     } catch (e) {
       console.log(e);
     }
@@ -76,6 +104,17 @@ export const AuthProvider = (props) => {
       console.log(e)
     }
   }
+
+
+  async function nextLevel() {
+    try {
+      // console.log(mission?.number+1);
+      await getUserLevel(null, token, mission?.number+1, {congratulations: true})
+    } catch (error) {
+      console.log('nextLevel error', error)
+    }
+  }
+
 
 
   const [posts, setPosts] = useState([{
@@ -179,12 +218,8 @@ export const AuthProvider = (props) => {
     "color": "red"
   }, {
     "number": 2,
-    "text": "O teste",
+    "text": "Decisão",
     "color": "yellow"
-  }, {
-    "number": 3,
-    "text": "Outro",
-    "color": "green"
   }])
   return (
     <AuthContext.Provider value={{ 
@@ -203,7 +238,9 @@ export const AuthProvider = (props) => {
       updateTasks, 
       loading, 
       token,
-      refreshData
+      refreshData,
+      nextLevel,
+      getUserLevel
     }}>{props.children}</AuthContext.Provider>
   )
 }

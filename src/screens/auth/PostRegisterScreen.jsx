@@ -100,7 +100,7 @@ const PostRegisterScreen = ({ route, navigation }) => {
           <ScrollFix>
             <Center>
             <Heading size={'lg'} mb={1} >Estamos quase lá</Heading>
-            <Text mb={2}>Falta pouco para lorem ipsum dolor sit amet.</Text>
+            <Text mb={2}>Falta pouco para começar sua jornada.</Text>
             </Center>
             <Divider my={3}/>
               <HStack space={2} alignItems={"center"}>

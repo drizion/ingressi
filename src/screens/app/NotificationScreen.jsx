@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { HStack, Center, Heading, Box, Button, Text } from 'native-base';
+import { StatusBar, HStack, Center, Heading, Box, Button, Text } from 'native-base';
 import AuthContext from '../../contexts/auth';
 import Header from '../../components/Header';
 import { useQuery } from '@tanstack/react-query';
@@ -9,9 +9,9 @@ const NotificationScreen = () => {
   const { user, level, token } = useContext(AuthContext)
   const [test, setTest] = useState()
 
-  const MissionQuery = useQuery(['mission', user.id], getLevel(user.id, token, 1))
   return (
     <Box mx={5} flex={1} safeAreaTop>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
       <Header removeBack picture={user.picture} />
       <Center flex={1} justifyContent="center">
         <Heading size="sm">
