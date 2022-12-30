@@ -96,7 +96,7 @@ const Post = (props) => {
           </HStack>
         }
         <Divider my={3} />
-        <Text lineHeight={'lg'} fontSize={'md'} pb={5}>{data?.description}</Text>
+        <Text lineHeight={'lg'} fontSize={'md'} textAlign={'justify'} pb={5}>{data?.description}</Text>
         <LinksComponent links={data?.links} />
         <MissionPostInteractor isMission={false} />
       </ScrollView>

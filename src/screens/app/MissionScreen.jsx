@@ -5,12 +5,11 @@ import Header from '../../components/Header';
 import { styles } from '../../components/styles';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import api from '../../services/global/api';
 import getLevel from '../../services/global/app/tasks/getLevel';
 
 const LevelItem = (props) => {
-
   return (
     <Pressable onPress={props.isLocked ? () => Toast.show({description: `Nível ${props.number} bloqueado, complete as tarefas para desbloquear!`}) : props.onPress} _pressed={props.isLocked ? { bg: "gray.400" } : { bg: props.color + ".200" }} justifyContent={"center"} bg={props.isLocked ? "gray.300" : props.color + ".300"} style={styles.brutalShadow} size={props.size | 24}>
       <Center>
@@ -38,9 +37,6 @@ const MissionScreen = () => {
   useEffect(() => {
     setLoading(false)
   }, [navigation])
-  useEffect(() => {
-    setLevelLength(user?.gamification?.length)
-  }, [])
   const levels = [{
     number: 1,
     text: "O inicio",
@@ -50,24 +46,36 @@ const MissionScreen = () => {
     text: "A Decisão",
     color: "yellow"
   }]
-  const fetchLevelMutation  = useMutation(async ({level}) => {
-    const { data } = await api.post(`/user/level`, {
-      level,
-      token
-    })
-    return data;
-  }, {
-    onSuccess : (data)=>{
-      console.log('carregando nivel', data)
-    },
-    onError: (error, variables, context) => {
-      Toast.show({description: "Verifique a conexão com a internet"})
-      console.log('erro ao carregar nivel', error)
-    },
-    onMutate: (variables) => {
-      console.log('mutating')
-    }
+  const fetchLevel = async () => {
+    const { data } = await api.post('/user/levelcomponent', {token: token})
+    return data.result
+  }
+  useQuery
+  const {
+    data,
+    error,
+    isLoading,
+    refetch,
+    isFetching,
+    isFetched,
+    status,
+    isSuccess
+  } = useQuery({
+    queryKey: ['appLevel'],
+    queryFn: fetchLevel
   })
+  if(error) {
+    console.log(error.request)
+  }
+  useEffect(() => {
+    setLevelLength(user?.gamification?.length)
+    const unsubscribe = navigation.addListener('focus', () => {
+      refetch()
+    });
+
+    return unsubscribe;
+  }, [])
+  
   return (
     <Box flex={1} safeAreaTop>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
@@ -79,11 +87,12 @@ const MissionScreen = () => {
           </Skeleton>
         </Box>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <Skeleton h={20} ml={5} w={500} startColor={'gray.400'} rounded="md" mb={2} isLoaded={!loading} endColor={'gray.200'}>
+          <Skeleton h={20} ml={5} w={500} startColor={'gray.400'} rounded="md" mb={2} isLoaded={!isLoading} endColor={'gray.200'}>
             <HStack space={3}>
               <Box ml={2} />
-                {levels.map((level, i) => {
-                  return <LevelItem color={level?.color} onPress={() => (level?.number !== mission?.number) ? getUserLevel(null, token, level?.number, {toast: true}) : navigation.navigate('Tasks')} key={i} number={level?.number} text={level?.text} isLocked={levelLength<=i} />
+                {data?.map((level, i) => {
+                  // console.log(level)
+                  return <LevelItem color={level.cardColor} onPress={() => (level?.level !== mission?.number) ? getUserLevel(null, token, level?.level, {toast: true}) : navigation.navigate('Tasks')} key={`${level?._id}${level?.locked}`} number={level?.level} text={level?.cardTitle} isLocked={level?.locked} />
                 })}
               <Box mr={2} />
             </HStack>
@@ -100,7 +109,7 @@ const MissionScreen = () => {
                 <Icon size={'2xl'} color={"black"} mr={3} mt={2} as={Ionicons} name="home" />
                 <VStack>
                   <Heading>{mission?.title}</Heading>
-                  <Text>Nível {mission?.number} | incompleta</Text>
+                  <Text>Nível {mission?.number}</Text>
                 </VStack>
               </HStack>
               <Text numberOfLines={2}>{mission?.description}</Text>

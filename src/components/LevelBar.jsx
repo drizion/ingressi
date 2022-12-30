@@ -18,7 +18,7 @@ export const LevelBar = (props) => {
       <Center ml={-2}>
         <Box w="100" maxW="100">
           <Progress style={styles.brutalShadow} bg="coolGray.100" size="2xl" _filledTrack={{
-          bg: "lime.500", borderRightWidth: props.progress == 0 ? 0 : props.progress == 100 ? 0 : 3,
+          bg: "lime.500", borderRightWidth: props.progress == 0 ? 0 : props.progress >= 100 ? 0 : 3,
           borderLeftRadius: 0 
           }} value={props.progress || 0} borderWidth={1} borderLeftRadius={0} />
         </Box>

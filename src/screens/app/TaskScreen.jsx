@@ -48,10 +48,7 @@ const TaskScreen = ({navigation}) => {
     setTask(taskObj)
     setShowModal(true)
   }
-  function closeModal(task){
-    setShowModal(false)
-    navigation.navigate('Posts')
-  }
+
   const insets = useSafeAreaInsets()
   return ( 
     <View flex={1}>
@@ -75,7 +72,7 @@ const TaskScreen = ({navigation}) => {
               <Heading size={'md'}>Tarefas</Heading>
             </Box>
             {tasks?.map((task, i) => (
-                <Box key={i}>
+                <Box key={task.title}>
                   <Divider bg={'black'} />
                   <Stack m={4}>
                     <Checkbox onChange={() => handleModal(task)} isChecked={task?.completed} colorScheme="light">
@@ -113,6 +110,7 @@ const TaskScreen = ({navigation}) => {
                          {task?.completed ? 'Desmarcar tarefa' : 'Marcar como lido'}
                       </Button>
                       <Button bg={'red.400'} _pressed={{bg: "black"}} style={styles.brutalButton} onPress={() => {
+                        setShowModal(false)
                         navigation.navigate('Task', {taskId: task?.id, completed: task?.completed})
                       }}>
                         Ir para postagem

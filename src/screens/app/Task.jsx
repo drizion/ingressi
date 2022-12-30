@@ -64,6 +64,19 @@ const Task = (props) => {
       console.log('erro ao atualizar tarefa', error)
     }
   })
+  const handleButton = () => {
+    let newTasks = tasks?.map(t => {
+      if (t.id == taskId) {
+        t.completed = !t.completed
+      }
+      return t
+    })
+    toggleTaskMutation.mutate({ taskId, level: mission.number, token })
+    updateTasks(newTasks);
+    setTimeout(() => {
+      navigation.goBack()
+    }, 500);
+  }
   return (
     <Box safeAreaTop>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
@@ -80,21 +93,12 @@ const Task = (props) => {
         </Box>
 
         <Divider my={3} />
-        <Text lineHeight={'lg'} fontSize={'md'} pb={5}>{data?.description}</Text>
+        <Text lineHeight={'lg'} fontSize={'md'} textAlign={'justify'} pb={5}>{data?.description}</Text>
         <LinksComponent links={data?.links} />
         <Box mb={4}>
           <Divider mb={4} />
-          <Button onPress={() => {
-            let newTasks = tasks?.map(t => {
-              if (t.id == taskId) {
-                t.completed = !t.completed
-              }
-              return t
-            })
-            toggleTaskMutation.mutate({ taskId, level: mission.number, token })
-            updateTasks(newTasks);
-            navigation.goBack()
-          }} colorScheme={isCompleted ? 'red' : 'green'} style={styles.brutalButton}>
+          <Button onPress={() => handleButton()} 
+          colorScheme={isCompleted ? 'red' : 'green'} style={styles.brutalButton}>
             {isCompleted ? "Desmarcar tarefa" : "Concluir tarefa"}
           </Button>
         </Box>

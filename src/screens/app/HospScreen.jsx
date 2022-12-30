@@ -10,17 +10,15 @@ import { List } from 'react-native-paper';
 
 const BrutalCard = (props) => <Box p={3} {...props} bg={'white'} style={styles.brutalButton}>{props.children}</Box>
 
-const CourseScreen = (props) => {
+const HospScreen = (props) => {
   const { user } = useContext(AuthContext)
-  const [expanded, setExpanded] = React.useState(true);
 
-  const handlePress = () => setExpanded(!expanded);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'#f2f2f2'} />
       <ScrollView px={5}>
         <Header picture={user.picture} />
-        <Heading mb={3}>{props.route.params.name}</Heading>
+        <Heading mb={3}>Hospedagem</Heading>
         <Box w='100%' h={200} style={styles.image}>
           <Image source={{
             uri: "https://centralpronatec.com.br/wp-content/uploads/2014/12/Fotolia_57158143_Subscription_Monthly_M.jpg"
@@ -122,4 +120,4 @@ const CourseScreen = (props) => {
   )
 }
 
-export default CourseScreen
+export default HospScreen

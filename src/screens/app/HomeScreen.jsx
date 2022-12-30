@@ -35,7 +35,7 @@ export default function HomeScreen({ navigation }) {
           >
             <ProfilePicture onPress={() => navigation.navigate('Profile')} url={user?.picture} />
 
-            <LevelBar progress={50} level={user?.gamification?.length} />
+            <LevelBar progress={mission?.number * 35} level={user?.gamification?.length} />
           </HStack>
           <HomeWelcome welcome="Olá novamente" name={user?.name?.split(' ')[0]} loaded />
           <Divider mb={8} thickness={2} bg={'#101118'} />
@@ -73,14 +73,14 @@ export default function HomeScreen({ navigation }) {
             text="Hospedagem"
             cardBorderColor="#0A4459"
             cardBgColor="#3E95B5"
-            onPress={() => navigation.navigate('Course', { name: "Hospedagem", text: "Em breve, informações sobre o curso de Hospedagem\n\n-objetivo do curso\n-grade curricular\n-professores\n-horários\n-etc..." })}
+            onPress={() => navigation.navigate('Hospedagem')}
           />
           <HomeCard
             iconName="settings-ethernet"
             text="Informática"
             cardBorderColor="#17473B"
             cardBgColor="#3E9F88"
-            onPress={() => navigation.navigate('Course', { name: "Informática para Internet", text: "Em breve, informações sobre o curso de Informática para Internet\n\n-objetivo do curso\n-grade curricular\n-professores\n-horários\n-etc..." })}
+            onPress={() => navigation.navigate('Informatica')}
           />
         </HStack>
       </ScrollView>

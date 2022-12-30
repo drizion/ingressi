@@ -75,12 +75,12 @@ const RegisterScreen = ({ navigation }) => {
       </FormControl>
       <FormControl mb={5}>
         <Radio.Group onChange={newUserType => setUserType({userType: newUserType})} defaultValue="ingressante" name="usertype">
-          <Radio colorScheme={'emerald'} value="ingressante" mb={2} size={'sm'}>
+          {/* <Radio colorScheme={'emerald'} value="ingressante" mb={2} size={'sm'}>
             Eu quero conhecer/estudar no IFC-CAS.
           </Radio>
           <Radio isDisabled colorScheme={'emerald'} value="aluno" size={'sm'}>
             Eu já estudo no IFC-CAS.
-          </Radio>
+          </Radio> */}
         </Radio.Group>
       </FormControl>
       <Button colorScheme={'emerald'} style={styles.brutalButton} onPress={() => handleSubmit()} size={'lg'} mb={2}>Continuar inscrição</Button>

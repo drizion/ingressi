@@ -18,6 +18,8 @@ import CourseScreen from '../screens/app/CourseScreen';
 import Post from '../screens/app/Post';
 import { SafeAreaInsetsContext, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Task from '../screens/app/Task';
+import HospScreen from '../screens/app/HospScreen';
+import InfoScreen from '../screens/app/InfoScreen';
 
 const tabOptions = {
   headerShown: false,
@@ -92,6 +94,16 @@ const AppRoutes = () => {
 			<Stack.Screen
             name="Course"
             component={CourseScreen}
+            options={{ headerShown: false }}
+            />
+            <Stack.Screen
+            name="Hospedagem"
+            component={HospScreen}
+            options={{ headerShown: false }}
+            />
+            <Stack.Screen
+            name="Informatica"
+            component={InfoScreen}
             options={{ headerShown: false }}
             />
         </Stack.Navigator>
